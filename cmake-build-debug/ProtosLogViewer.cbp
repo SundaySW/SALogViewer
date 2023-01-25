@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ProtosLogViewer"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\Qt\;CMake Files\..\..\..\..\Qt\5.15.2\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Widgets\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Core\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5LinguistTools\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5PrintSupport\;CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Sql\;CMake Files\Resources\;CMake Files\qcustomplot\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ProtosLogViewer">
+				<Option output="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="0"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DQCUSTOMPLOT_USE_LIBRARY"/>
+					<Add option="-D_VER=&quot;V1.3&quot;"/>
+					<Add option="-D_BUILD_TYPE_=&quot;Debug&quot;"/>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add option="-DQT_PRINTSUPPORT_LIB"/>
+					<Add option="-DQT_SQL_LIB"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer_autogen/include"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtWidgets"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtGui"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtANGLE"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtCore"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtPrintSupport"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtSql"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/backward"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include-fixed"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProtosLogViewer"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ProtosLogViewer/fast">
+				<Option output="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="0"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DQCUSTOMPLOT_USE_LIBRARY"/>
+					<Add option="-D_VER=&quot;V1.3&quot;"/>
+					<Add option="-D_BUILD_TYPE_=&quot;Debug&quot;"/>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add option="-DQT_PRINTSUPPORT_LIB"/>
+					<Add option="-DQT_SQL_LIB"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer_autogen/include"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtWidgets"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtGui"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtANGLE"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtCore"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtPrintSupport"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtSql"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/backward"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include-fixed"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProtosLogViewer/fast"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ProtosLogViewer_autogen">
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProtosLogViewer_autogen"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="qcustomplot">
+				<Option output="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/libqcustomplot.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DQCUSTOMPLOT_COMPILE_LIBRARY"/>
+					<Add option="-D_VER=&quot;V1.3&quot;"/>
+					<Add option="-D_BUILD_TYPE_=&quot;Debug&quot;"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_PRINTSUPPORT_LIB"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/qcustomplot_autogen/include"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtCore"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtGui"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtANGLE"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtWidgets"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtPrintSupport"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/backward"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include-fixed"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 qcustomplot"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="qcustomplot/fast">
+				<Option output="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/libqcustomplot.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DQCUSTOMPLOT_COMPILE_LIBRARY"/>
+					<Add option="-D_VER=&quot;V1.3&quot;"/>
+					<Add option="-D_BUILD_TYPE_=&quot;Debug&quot;"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_PRINTSUPPORT_LIB"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot"/>
+					<Add directory="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/qcustomplot_autogen/include"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtCore"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/./mkspecs/win32-g++"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtGui"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtANGLE"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtWidgets"/>
+					<Add directory="C:/Qt/5.15.2/mingw81_64/include/QtPrintSupport"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include/c++/8.5.0/backward"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../include"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/include-fixed"/>
+					<Add directory="c:\toolchains\mingw_64\bin\../lib/gcc/x86_64-w64-mingw32/8.5.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 qcustomplot/fast"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="qcustomplot_autogen">
+				<Option working_dir="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 qcustomplot_autogen"/>
+					<CompileFile command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/ToolChains/MinGW_64/bin/mingw32-make.exe -f &quot;C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/DB_Driver/PSQL_Driver.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/DB_Driver/PSQL_Driver.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/LogItem/LogItem.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/LogItem/LogItem.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/LogViewer.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/LogViewer.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/ProtosLogViewer_en_US.ts">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/ProtosLogViewer_en_US.ts.rule">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/Resources/files.qrc">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer_autogen/S5YYZ2ZCNV/qrc_files.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer_autogen/S5YYZ2ZCNV/qrc_files.cpp.rule">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/ProtosLogViewer_autogen/mocs_compilation.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/cmake-build-debug/qcustomplot/qcustomplot_autogen/mocs_compilation.cpp">
+			<Option target="qcustomplot"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/main.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/mainwindow.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/mainwindow.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/mainwindow.ui">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot/qcustomplot.cpp">
+			<Option target="qcustomplot"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot/qcustomplot.h">
+			<Option target="qcustomplot"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_Settings/Settings_dlg.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_Settings/Settings_dlg.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_Settings/dbsettingswdgt.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_Settings/dbsettingswdgt.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_Settings/dbsettingswdgt.ui">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_treeview/ItemModel.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_treeview/ItemModel.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_treeview/TreeItem.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_treeview/TreeItem.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_treeview/treeModel.cpp">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/view_treeview/treeModel.h">
+			<Option target="ProtosLogViewer"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5/Qt5Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5/Qt5ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5/Qt5ModuleLocation.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Widgets/Qt5Widgets_QWindowsVistaStylePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5GuiConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWindowsDirect2DIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QWindowsIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Core/Qt5CoreConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Core/Qt5CoreConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Core/Qt5CoreMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5LinguistTools\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5LinguistTools/Qt5LinguistToolsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5LinguistTools\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5LinguistTools\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5PrintSupport/Qt5PrintSupportConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5PrintSupport\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5PrintSupport/Qt5PrintSupportConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5PrintSupport\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5PrintSupport/Qt5PrintSupport_QWindowsPrinterSupportPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5PrintSupport\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Sql/Qt5SqlConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Sql\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Sql/Qt5SqlConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Sql\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Sql/Qt5Sql_QODBCDriverPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Sql\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Sql/Qt5Sql_QPSQLDriverPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Sql\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/../../../../Qt/5.15.2/mingw81_64/lib/cmake/Qt5Sql/Qt5Sql_QSQLiteDriverPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\Qt\5.15.2\mingw81_64\lib\cmake\Qt5Sql\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/Resources/files.qrc">
+			<Option virtualFolder="CMake Files\Resources\"/>
+		</Unit>
+		<Unit filename="C:/Users/user/CLionProjects/ProtosLogViewer/qcustomplot/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\qcustomplot\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

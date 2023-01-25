@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>database.svg</file>
+        <file>download.svg</file>
+        <file>remove.svg</file>
+        <file>chart.svg</file>
+        <file>connect.svg</file>
+        <file>save.svg</file>
+        <file>disconnect.svg</file>
+        <file>Item_icon.svg</file>
+        <file>expand_circle_down.svg</file>
+        <file>arrow_circle_right.svg</file>
+        <file>back_pattern.svg</file>
+    </qresource>
+    <qresource prefix="/css">
+        <file>css/dbsettings.css</file>
+        <file>css/main.css</file>
+    </qresource>
+</RCC>

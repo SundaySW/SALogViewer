@@ -1,0 +1,15 @@
+{
+  "ConfObject": {
+    "AutoReConnect": true,
+    "ServerIP": "127.0.0.5",
+    "ServerPort": "3699"
+  },
+  "DBConfObject": {
+    "DatabaseName": "sa_pump_metrics",
+    "HostName": "localhost",
+    "Password": "qwerty",
+    "Port": "5432",
+    "UserName": "sa_params",
+    "autoconnect": true
+  }
+}

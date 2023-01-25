@@ -1,0 +1,3 @@
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\ProtosLogViewer.dir/objects.a
+C:\ToolChains\MinGW_64\bin\ar.exe qc CMakeFiles\ProtosLogViewer.dir/objects.a @CMakeFiles\ProtosLogViewer.dir\objects1.rsp
+C:\ToolChains\MinGW_64\bin\g++.exe -DQT_QML_DEBUG -g -mwindows -Wl,--whole-archive CMakeFiles\ProtosLogViewer.dir/objects.a -Wl,--no-whole-archive -o ProtosLogViewer.exe -Wl,--out-implib,libProtosLogViewer.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ProtosLogViewer.dir\linklibs.rsp
