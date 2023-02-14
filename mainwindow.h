@@ -5,7 +5,9 @@
 #include <view_Settings/Settings_dlg.h>
 #include <QtCore/QFile>
 #include <view_treeview/treeModel.h>
-#include <view_treeview/TreeItem.h>
+#include <view_load_items_from_db/itemsloader.h>
+#include <qcustomplot/qcustomplot.h>
+#include "LogItem/LogItem.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,17 +19,28 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void plotTest();
+private slots:
+    void ContextMenuRequested(const QPoint &pos);
 private:
     QJsonObject ConfJson;
     QFile* configFile;
     LogViewer* logViewer;
+    LogItem* rootItem;
+    ItemsLoader* loader;
     TreeModel* treeModel;
+    QCustomPlot* Plot;
+    QDialog* loaderDlg;
     Settings_dlg* settingsDlg;
     Ui::MainWindow *ui;
-    void newPlots();
+
     void openFileLoadConfig();
     void AddToLog(const QString &string, bool isError = false);
     void checkServicesConnection();
+    void setupModelData();
+    void configLoaderDlg();
+    void setConnections();
+    void configureUI();
+    void closeEvent(QCloseEvent *event) override;
+    void saveAll();
 };
 #endif // MAINWINDOW_H

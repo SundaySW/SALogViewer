@@ -7,16 +7,16 @@
 
 #include <QAbstractItemModel>
 #include <QModelIndex>
-#include "TreeItem.h"
 #include "QMimeData"
 #include "QVariantMap"
 #include "QBrush"
-
+#include "TreeItem.h"
+#include "LogItem/LogItem.h"
 
 class TreeModel : public QAbstractItemModel {
-Q_OBJECT
+    Q_OBJECT
 public:
-    TreeModel(const QStringList &headers, QObject *parent = 0);
+    TreeModel(LogItem* rootItem, QObject *parent = nullptr);
     ~TreeModel();
     QVariant data(const QModelIndex &index, int role) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -31,24 +31,23 @@ public:
     bool removeColumns(int position, int columns, const QModelIndex &parent = QModelIndex()) override;
     bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
-
+    void beginResetMe();
+    void endResetMe();
+    void reFresh();
+    QVector<LogItem*> getSelections(const QModelIndexList& indexes);
+    LogItem *getItem(const QModelIndex &index) const;
     //Drag&Drop
     Qt::DropActions supportedDropActions() const override;
     Qt::DropActions supportedDragActions() const override;
     QMimeData *mimeData(const QModelIndexList &indexes) const override;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
     bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const override;
+    bool canFinishDrop(const QModelIndex &parent) const;
     bool moveRowDD(int newPosition, const QModelIndex &newParentIdx);
+signals:
+    void ItemMoved(LogItem* who, LogItem* where, LogItem* from);
 private:
     static inline QVariantMap movingData = {};
-    TreeItem *getItem(const QModelIndex &index) const;
-    TreeItem *rootItem;
-
-    void setupModelData(const QStringList &lines, TreeItem *parent);
-    void setupModelData(TreeItem *parent);
-
-    QVariant getDisplayRole(TreeItem *item, const QModelIndex &index) const;
-    QVariant getDecorationRole(TreeItem *item, const QModelIndex &index) const;
-    QVariant getBackgroundRole(TreeItem *item, const QModelIndex &index) const;
+    LogItem *rootItem;
 };
 #endif //PROTOSLOGVIEWER_TREEMODEL_H

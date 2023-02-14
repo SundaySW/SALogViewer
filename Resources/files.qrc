@@ -11,9 +11,20 @@
         <file>expand_circle_down.svg</file>
         <file>arrow_circle_right.svg</file>
         <file>back_pattern.svg</file>
+        <file>table.svg</file>
+        <file>confirm.svg</file>
+        <file>dateTimeType.svg</file>
+        <file>floatType.svg</file>
+        <file>lonlType.svg</file>
+        <file>expand_more.svg</file>
+        <file>graph_icon.svg</file>
+        <file>arrow_right.svg</file>
     </qresource>
     <qresource prefix="/css">
         <file>css/dbsettings.css</file>
         <file>css/main.css</file>
+    </qresource>
+    <qresource prefix="/png">
+        <file>background.png</file>
     </qresource>
 </RCC>

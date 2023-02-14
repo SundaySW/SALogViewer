@@ -37,6 +37,8 @@ void dbsettingswdgt::Save() {
     confObj["Password"] = ui->Password->text();
     confObj["Port"] = ui->Port->text();
     confObj["autoconnect"] = ui->autoconnect->isChecked();
+    confObj["KeyColumnName"] = ui->KeyColumnName->text();
+    confObj["ValueColumnName"] = ui->ValueColumnName->text();
     savedConf["DBConfObject"] = confObj;
 }
 
@@ -48,6 +50,8 @@ void dbsettingswdgt::Set() {
     ui->Password->setText  (confObject["Password"].toString());
     ui->Port->setText(confObject["Port"].toString());
     ui->autoconnect->setChecked(confObject["autoconnect"].toBool());
+    ui->KeyColumnName->setText(confObject["KeyColumnName"].toString());
+    ui->ValueColumnName->setText(confObject["ValueColumnName"].toString());
 }
 
 void dbsettingswdgt::setEditsStateDisabled(bool state) {
@@ -57,7 +61,6 @@ void dbsettingswdgt::setEditsStateDisabled(bool state) {
     ui->Password->setDisabled(state);
     ui->Port->setDisabled(state);
     ui->autoconnect->setDisabled(state);
-    ui->saveBtn->setDisabled(state);
 }
 
 void dbsettingswdgt::updateView() {

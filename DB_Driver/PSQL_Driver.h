@@ -8,6 +8,8 @@
 #include <QSqlDatabase>
 #include <QtCore/QJsonObject>
 #include "functional"
+#include <qcustomplot/qcustomplot.h>
+#include "LogItem/LogItem.h"
 
 class PSQL_Driver {
 public:
@@ -19,17 +21,14 @@ public:
     void closeConnection();
     [[nodiscard]] bool isDBOk() const;
     QSet<QString>& getTableNames();
-
+    void getLogItemData(const QString&, QVector<QVariant>&, const QString&);
 private:
-    bool hasTable(const QString &tableName);
-    bool sendReq(const QString &queryStr);
     QSqlDatabase db;
     QJsonObject& config;
     QString host, dbName, userName, password, port;
     QString eventsTableName = "events";
     QString viewChangesTName = "view_changes";
     QSet<QString> tableNames;
-private:
     bool inError;
     bool connected;
     bool autoConnect;
@@ -40,6 +39,8 @@ private:
     void loadTableNames();
     void configUpdate();
     bool execMyQuery(QSqlQuery&, const QString&);
+    bool hasTable(const QString &tableName);
+    bool sendReq(const QString &queryStr);
 };
 
 

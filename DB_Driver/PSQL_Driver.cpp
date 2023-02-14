@@ -42,8 +42,6 @@ void PSQL_Driver::loadTableNames(){
     QString queryStr = QString("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';");
     QSqlQuery query;
     if(!execMyQuery(query, queryStr)) {
-//        qDebug() << query.lastError().text();
-//        qDebug() << queryStr;
         throwErrorToLog("while check table: " + query.lastError().text());
         return;
     }
@@ -51,6 +49,22 @@ void PSQL_Driver::loadTableNames(){
     tableNames.clear();
     while (query.next())
         tableNames.insert(query.value(0).toString());
+}
+
+void PSQL_Driver::getLogItemData(const QString& tableName, QVector<QVariant>& dataVec, const QString& columnName){
+    QString queryStr = QString(
+                            "SELECT %1 "
+                                "FROM %2 ;"
+                            ).arg(columnName)
+                             .arg(tableName);
+    QSqlQuery query;
+    if(!execMyQuery(query, queryStr)){
+        throwErrorToLog("while loading data: " + query.lastError().text());
+        return;
+    }
+    dataVec.reserve(query.size());
+    while (query.next())
+        dataVec.append(query.value(0));
 }
 
 bool PSQL_Driver::hasTable(const QString& tableName){
@@ -61,11 +75,8 @@ bool PSQL_Driver::hasTable(const QString& tableName){
             "AND table_type LIKE 'BASE TABLE' "
             "AND table_name = '%1');").arg(tableName);
     QSqlQuery query;
-    if(!execMyQuery(query, queryStr)) {
-//        qDebug() << query.lastError().text();
-//        qDebug() << queryStr;
+    if(!execMyQuery(query, queryStr))
         throwErrorToLog("while check table: " + query.lastError().text());
-    }
     bool retVal = false;
     if(query.next()) retVal = query.value(0).toBool();
     return retVal;*/
@@ -77,7 +88,6 @@ bool PSQL_Driver::sendReq(const QString &queryStr){
     if(!query.exec(queryStr))
     {
         inError = true;
-//        qDebug()<< "Query string: " << queryStr << " : " + query.lastError().text();
         throwErrorToLog("while sending query: " + query.lastError().text());
         return false;
     }else
@@ -85,9 +95,9 @@ bool PSQL_Driver::sendReq(const QString &queryStr){
 }
 
 bool PSQL_Driver::execMyQuery(QSqlQuery& query, const QString& queryStr){
-    if(inError) return false;
+//    if(inError) return false;
     bool result = query.exec(queryStr);
-    if(!result) inError = true;
+//    if(!result) inError = true;
     return result;
 }
 
@@ -132,5 +142,6 @@ bool PSQL_Driver::isAutoConnect() const {
 }
 
 QSet<QString> &PSQL_Driver::getTableNames(){
+    loadTableNames();
     return tableNames;
 }

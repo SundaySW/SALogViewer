@@ -10,35 +10,33 @@
 #include <QBrush>
 #include "QColor"
 
+template <typename T>
 class TreeItem {
 public:
-    explicit TreeItem (const QVector<QVariant> &data, TreeItem *parentItem = 0);
+    explicit TreeItem(const QVector<QVariant>&data, T *parentItem = 0);
     ~TreeItem();
-
-    void appendChild(TreeItem *child);
-    TreeItem *child(int row);
-    QVariant data(int column) const;
-
+    void appendChild(T *child);
+    T *child(int row);
+    virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value);
-
     int childCount() const;
     int columnCount() const;
-    int childNumber() const;
-    TreeItem *parentItem();
-    void setParentItem(TreeItem *parent);
-
+    int childNumber();
+    T *parentItem();
+    void setParentItem(T *parent);
     bool insertChildren(int position, int count, int columns);
-    bool insertChildren(int position, TreeItem* item);
+    bool insertChildren(int position, T* item);
     bool insertColumns(int position, int columns);
     bool removeChildren(int position, int count);
-    TreeItem* removeChildren(int position);
-    bool moveChildren(int position, TreeItem *newParent);
+    void removeChildren(int position);
+    T * moveChildren(int position, T *newParent);
     bool removeColumns(int position, int columns);
-
+    bool removeAllChildren();
+    const QList<T*>& getMChildItems() const;
 protected:
-    QList<TreeItem*> m_childItems;
+    QList<T*> m_childItems;
     QVector<QVariant> m_columnData;
-    TreeItem *m_parentItem;
+    T* m_parentItem = nullptr;
 };
 
 #endif //PROTOSLOGVIEWER_TREEITEM_H

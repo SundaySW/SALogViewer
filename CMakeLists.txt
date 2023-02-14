@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(ProtosLogViewer VERSION 1.0 LANGUAGES CXX)
-add_definitions(-D_VER="V1.3")
+project(SALogViewer VERSION 1.0 LANGUAGES CXX)
+add_definitions(-D_VER="V1.0")
 add_definitions(-D_BUILD_TYPE_="${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -27,6 +27,9 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/view_Settings/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/LogItem/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/view_treeview/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_db/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_csv/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/CSV/*.*
         )
 
 set(PROJECT_SOURCES
@@ -89,3 +92,18 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(ProtosLogViewer)
 endif()
+
+target_compile_options(${PROJECT_NAME}
+        PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+#        -Werror
+        -Wduplicated-cond
+        -Wduplicated-branches
+        -Wlogical-op
+        -Wnull-dereference
+        -Wshadow
+        -Wconversion
+        -Wsign-conversion
+        )

@@ -1,8 +1,0 @@
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/CMakeFiles/ProtosLogViewer.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/CMakeFiles/edit_cache.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/CMakeFiles/rebuild_cache.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/CMakeFiles/ProtosLogViewer_autogen.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/qcustomplot/CMakeFiles/qcustomplot.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/qcustomplot/CMakeFiles/edit_cache.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/qcustomplot/CMakeFiles/rebuild_cache.dir
-C:/Users/user/CLionProjects/ProtosLogViewer/build-ProtosLogViewer-Desktop-Debug/qcustomplot/CMakeFiles/qcustomplot_autogen.dir

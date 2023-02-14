@@ -1,3 +1,0 @@
-C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\qcustomplot.dir/objects.a
-C:\ToolChains\MinGW_64\bin\ar.exe qc CMakeFiles\qcustomplot.dir/objects.a @CMakeFiles\qcustomplot.dir\objects1.rsp
-C:\ToolChains\MinGW_64\bin\g++.exe -DQT_QML_DEBUG -g -shared -o libqcustomplot.dll -Wl,--out-implib,libqcustomplot.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\qcustomplot.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\qcustomplot.dir\linklibs.rsp
