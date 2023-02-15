@@ -128,4 +128,10 @@ const QList<T*>& TreeItem<T>::getMChildItems() const{
     return m_childItems;
 }
 
+template<typename T>
+void TreeItem<T>::removeAllChildren() {
+    while(childCount())
+        delete m_childItems.takeAt(0);
+}
+
 template class TreeItem<LogItem>;

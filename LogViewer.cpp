@@ -10,27 +10,28 @@
 LogViewer::LogViewer(QJsonObject &inJson, QCustomPlot* inPlot, LogItem* root, QWidget* _parent):
      mainWin(_parent)
     ,qJsonObject(inJson)
-    ,dbDriver(PSQL_Driver(inJson))
+    ,dbDriver(std::make_shared<PSQL_Driver>(inJson))
     ,Plot(inPlot)
     ,rootItem(root)
 {
-    dbDriver.errorInDBDriver = [this](const QString& errorStr){ errorInDBToLog(errorStr);};
-    dbDriver.eventInDBDriver = [this](const QString& eventStr){ eventInDBToLog(eventStr);};
-    if(dbDriver.isAutoConnect()) dbDriver.setConnection();
+    dbDriver->errorInDBDriver = [this](const QString& errorStr){ errorInDBToLog(errorStr);};
+    dbDriver->eventInDBDriver = [this](const QString& eventStr){ eventInDBToLog(eventStr);};
+    if(dbDriver->isAutoConnect()) dbDriver->setConnection();
     setPlot();
 }
 
-PSQL_Driver& LogViewer::getDbDriver() {
+std::shared_ptr<PSQL_Driver> LogViewer::getDbDriver() {
     return dbDriver;
 }
 
 bool LogViewer::isDataBaseOk() {
-    return dbDriver.isDBOk();
+    return dbDriver->isDBOk();
 }
 
 bool LogViewer::setPlot(){
+    Plot->setOpenGl(true);
+    Plot->setNoAntialiasingOnDrag(true);
     Plot->plotLayout()->clear();
-//    Plot->setOpenGl(true);
     marginGroup = new QCPMarginGroup(Plot);
     Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("/../Resources/background.png")));
     Plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes | QCP::iMultiSelect);
@@ -57,22 +58,44 @@ bool LogViewer::setPlot(){
     });
 
     connect(Plot, &QCustomPlot::selectionChangedByUser, [this](){
-        for(auto* selectedGraph : Plot->selectedGraphs()) {
+        for(auto* selectedGraph : Plot->selectedGraphs()){
             if(!selectedGraph->selection().isEmpty()){
                 if(savedGraphs.contains(selectedGraph)){
                     savedGraphs.value(selectedGraph)->setText();
                 }else
-                    savedGraphs.insert(selectedGraph, new SavedGraphColor(selectedGraph->pen(), selectedGraph, Plot));
+                    savedGraphs.insert(selectedGraph, QSharedPointer<SavedGraphColor>(new SavedGraphColor(selectedGraph->pen(), selectedGraph, Plot)));
             }
         }
-        for(auto it = savedGraphs.begin(); it != savedGraphs.end(); it++){
+        for(auto it = savedGraphs.begin(); it != savedGraphs.end();){
             if(it.value()->savedGraph->selection().isEmpty()){
-                savedGraphs.remove(it.key());
-                delete it.value();
+                it.value()->beforeDel();
+                savedGraphs.erase(it++);
+            }
+            else it++;
+        }
+    });
+
+    connect(Plot, &QCustomPlot::mouseMove, [this](QMouseEvent* event){
+        if(QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier)) {
+            auto* plottable = Plot->plottableAt(event->pos());
+            if(plottable) {
+                auto* rect = plottable->keyAxis()->axisRect();
+                if(rect){
+                    double coord = rect->axis(QCPAxis::atBottom)->pixelToCoord(event->pos().x());
+                    double x = rect->graphs().first()->data()->findBegin(coord)->key;
+                    double y = rect->graphs().first()->data()->findBegin(coord)->value;
+                    auto pal = QPalette(QColor(LogVieverColor_middle), QColor(LogVieverColor_white));
+                    QToolTip::setPalette(pal);
+                    QToolTip::showText(Plot->mapToGlobal(event->pos()),
+                                       QString("Key: %1\nValue: %2")
+                                       .arg(QDateTime::fromSecsSinceEpoch(x).toString("hh:mm:ss"))
+                                       .arg(y));
+                }
             }
         }
     });
-//    connect(Plot, &QCustomPlot::plottableDoubleClick, [this](QCPAbstractPlottable* plottable, int dataIndex, QMouseEvent *event){
+
+    connect(Plot, &QCustomPlot::plottableDoubleClick, [this](QCPAbstractPlottable* plottable, int dataIndex, QMouseEvent *event){
 //        plottable->setSelectable(QCP::SelectionType::stMultipleDataRanges);
 //        QString label = plottable->keyAxis()->label();
 //        QString yValue = QString("Value is: %1").arg(plottable->valueAxis()->graphs().value(0)->dataMainValue(dataIndex));
@@ -89,7 +112,13 @@ bool LogViewer::setPlot(){
 //        }
 //        else
 //            Plot->setSelectionRectMode(QCP::srmNone);
-//    });
+//        if(event->button() == Qt::MiddleButton){
+//            if(Plot->axisRectAt(event->pos()))
+//                Plot->plottableAt(event->pos()).
+//                Plot->axisRectAt(event->pos())->graphs().first()->dataMainValue()
+//
+//        }
+    });
 //    connect(Plot, &QCustomPlot::mouseRelease, [this](QMouseEvent*  event){
 //    });
 
@@ -186,10 +215,6 @@ QCPAxisRect* LogViewer::prepareRect(bool last) {
     rect->setMargins(QMargins(0, 0, 0, 0));
     rect->setMarginGroup(QCP::msAll, marginGroup);
 
-    QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
-    dateTimeTicker->setDateTimeFormat("MM.dd-hh:mm");
-    bottomAxis->setTicker(dateTimeTicker);
-
     topAxis->setPadding(0);
     topAxis->setOffset(0);
     topAxis->setTicks(false);
@@ -239,6 +264,11 @@ void LogViewer::completeLastRect(QCPAxisRect *rect){
     bottomAxis->setTickPen(QPen(QColor(LogVieverColor_white)));
     bottomAxis->setBasePen(QPen(QColor(LogVieverColor_white),2));
     bottomAxis->setSubTickPen(QPen(QColor(LogVieverColor_white)));
+
+    QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
+    dateTimeTicker->setDateTimeFormat("MM.dd-hh:mm");
+    bottomAxis->setTicker(dateTimeTicker);
+
     QPen tickerPen = QPen(QColor(LogVieverColor_white), 2, Qt::SolidLine);
     QFont bottomTickFont = QFont("Rubik", 9, 4);
     bottomAxis->setTickLabelColor(QColor(LogVieverColor_white));
@@ -252,8 +282,8 @@ void LogViewer::loadItemFromDB(LogItem* item){
     auto valueColumn = qJsonObject.value("DBConfObject")["ValueColumnName"].toString();
     QVector<QVariant>keysVector;
     QVector<QVariant>valueVector;
-    dbDriver.getLogItemData(item->getTableName(), keysVector, keyColumn);
-    dbDriver.getLogItemData(item->getTableName(), valueVector, valueColumn);
+    dbDriver->getLogItemData(item->getTableName(), keysVector, keyColumn);
+    dbDriver->getLogItemData(item->getTableName(), valueVector, valueColumn);
     if(keysVector.size() != valueVector.size()){
         auto resBtn = QMessageBox::question( mainWin, "Problem while loading DataBase Data",
                 tr("Key data size not equal value data size\n"),

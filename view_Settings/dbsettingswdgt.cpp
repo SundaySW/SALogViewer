@@ -1,10 +1,12 @@
 #include "dbsettingswdgt.h"
+
+#include <utility>
 #include "ui_dbsettingswdgt.h"
 
-dbsettingswdgt::dbsettingswdgt(QJsonObject &JsonConf, PSQL_Driver &databaseDriver, QWidget *parent):
+dbsettingswdgt::dbsettingswdgt(QJsonObject &JsonConf, std::shared_ptr<PSQL_Driver> databaseDriver, QWidget *parent):
     QWidget(parent)
     , savedConf(JsonConf)
-    , dbDriver(databaseDriver)
+    , dbDriver(std::move(databaseDriver))
     , ui(new Ui::dbsettingswdgt)
 {
     ui->setupUi(this);
@@ -13,11 +15,11 @@ dbsettingswdgt::dbsettingswdgt(QJsonObject &JsonConf, PSQL_Driver &databaseDrive
     Set();
     updateView();
     connect(ui->connectBtn, &QPushButton::clicked, [this](){
-        if(dbDriver.isDBOk())
-            dbDriver.closeConnection();
+        if(dbDriver->isDBOk())
+            dbDriver->closeConnection();
         else{
             Save();
-            if(!dbDriver.setConnection()){
+            if(!dbDriver->setConnection()){
                 ui->statusLabel->setText("Error on connect to DB: " + ui->DatabaseName->text());
                 ui->statusLabel->setStyleSheet("color:red");
                 return;
@@ -64,7 +66,7 @@ void dbsettingswdgt::setEditsStateDisabled(bool state) {
 }
 
 void dbsettingswdgt::updateView() {
-    if(dbDriver.isDBOk()){
+    if(dbDriver->isDBOk()){
         ui->connectBtn->setIcon(disconnectIcon);
         setEditsStateDisabled(true);
         ui->statusLabel->setText("Connected to DB: " + ui->DatabaseName->text());

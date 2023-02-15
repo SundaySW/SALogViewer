@@ -24,7 +24,7 @@ private:
     LogItem* mainRootItem;
     TreeModel* tableTreeModel;
     LogViewer* logViewer;
-    PSQL_Driver& driver;
+    std::shared_ptr<PSQL_Driver> driver;
     Ui::ItemsLoader *ui;
 };
 

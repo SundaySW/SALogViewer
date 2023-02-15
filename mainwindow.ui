@@ -27,6 +27,16 @@
     font-family: Rubik;
 }
 
+
+
+QToolTip {
+   background: #45494A;
+	color: #BBBBBB;
+}
+
+
+
+
 QMainWindow{
 }
 
@@ -76,6 +86,8 @@ QPushButton:pressed {
 
 
 
+
+
 QComboBox {
 	color: #BBBBBB;
     border: 1px solid gray;
@@ -104,8 +116,6 @@ QComboBox::down-arrow {
 	height: 16px;
     image: url(:/icons/expand_more.svg);
 }
-
-
 
 
 
@@ -202,7 +212,7 @@ QTreeView::item:selected
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QPushButton" name="loadParams_btn">
+           <widget class="QPushButton" name="loadDBParams_btn">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -226,7 +236,7 @@ QTreeView::item:selected
             </property>
             <property name="icon">
              <iconset resource="Resources/files.qrc">
-              <normaloff>:/icons/download.svg</normaloff>:/icons/download.svg</iconset>
+              <normaloff>:/icons/table_g.svg</normaloff>:/icons/table_g.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -237,7 +247,7 @@ QTreeView::item:selected
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="clear_logs_btn">
+           <widget class="QPushButton" name="loadCSVParams_btn">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -270,12 +280,12 @@ QTreeView::item:selected
             </property>
             <property name="icon">
              <iconset resource="Resources/files.qrc">
-              <normaloff>:/icons/remove.svg</normaloff>:/icons/remove.svg</iconset>
+              <normaloff>:/icons/csv.svg</normaloff>:/icons/csv.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>41</width>
+              <height>41</height>
              </size>
             </property>
            </widget>

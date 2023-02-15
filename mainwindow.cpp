@@ -13,16 +13,19 @@ QRandomGenerator generator = QRandomGenerator();
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , loaderDlg(new QDialog(this))
+    , loaderCSVDlg(new QDialog(this))
+    , loaderDBDlg(new QDialog(this))
     , rootItem(new LogItem(QVector<QVariant>{"root"}))
     , treeModel(new TreeModel(rootItem, this))
 {
     configureUI();
     openFileLoadConfig();
     logViewer = new LogViewer(ConfJson, Plot, rootItem, this);
-    loader = new ItemsLoader(rootItem, logViewer, loaderDlg);
+    DBitemsLoader = new ItemsLoader(rootItem, logViewer, loaderDBDlg);
+    csvItemsLoader = new CSVItemsLoader(rootItem, logViewer, loaderCSVDlg);
     settingsDlg = new Settings_dlg(logViewer, ConfJson, this);
-    configLoaderDlg();
+    configDBLoaderDlg();
+    configCSVLoaderDlg();
     setConnections();
 }
 
@@ -33,12 +36,20 @@ void MainWindow::configureUI(){
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-void MainWindow::configLoaderDlg(){
-    loaderDlg->setModal(true);
-    loaderDlg->setWindowTitle("Load Logs");
+void MainWindow::configDBLoaderDlg(){
+    loaderDBDlg->setModal(true);
+    loaderDBDlg->setWindowTitle("Load DB Items");
     auto* diagLayout = new QVBoxLayout();
-    diagLayout->addWidget(loader);
-    loaderDlg->setLayout(diagLayout);
+    diagLayout->addWidget(DBitemsLoader);
+    loaderDBDlg->setLayout(diagLayout);
+}
+
+void MainWindow::configCSVLoaderDlg(){
+    loaderCSVDlg->setModal(true);
+    loaderCSVDlg->setWindowTitle("Load CSV Items");
+    auto* diagLayout = new QVBoxLayout();
+    diagLayout->addWidget(csvItemsLoader);
+    loaderCSVDlg->setLayout(diagLayout);
 }
 
 void MainWindow::setConnections(){
@@ -58,12 +69,22 @@ void MainWindow::setConnections(){
         settingsDlg->raise();
         settingsDlg->activateWindow();
     });
-    connect(ui->loadParams_btn, &QPushButton::clicked, [this](){
-        loader->reFresh();
-        loaderDlg->exec();
+    connect(ui->loadDBParams_btn, &QPushButton::clicked, [this](){
+        DBitemsLoader->reFresh();
+        loaderDBDlg->exec();
     });
-    connect(loader, &ItemsLoader::needToResetModel, [this](){
+    connect(ui->loadCSVParams_btn, &QPushButton::clicked, [this](){
+        treeModel->beginResetMe();
+        csvItemsLoader->reFresh();
+        treeModel->endResetMe();
+        loaderCSVDlg->exec();
+    });
+    connect(DBitemsLoader, &ItemsLoader::needToResetModel, [this](){
         treeModel->reFresh();
+    });
+    connect(csvItemsLoader, &CSVItemsLoader::needToResetModel, [this](){
+        treeModel->reFresh();
+        logViewer->rebuildLayout();
     });
     connect(logViewer, &LogViewer::errorInDBToLog, [this](const QString& errorStr){
         AddToLog(errorStr,true);

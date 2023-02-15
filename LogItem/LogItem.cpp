@@ -227,7 +227,13 @@ bool LogItem::bindGraph(QCPAxisRect *rect, QCustomPlot *Plot, QCPAxis* axis){
     axis->setBasePen(axisPen);
     axis->setSubTickPen(axisPen);
     axis->setTickPen(axisPen);
-    axis->setLabel(getName());
+    auto itemName = getName();
+    if(name.length()>12){//todo improve!
+        itemName.clear();
+        for(const auto& s : name.split(" "))
+            itemName += s +'\n';
+    }
+    axis->setLabel(itemName.trimmed());
     axis->setLabelColor(itemColor);
     axis->setTickLabelColor(itemColor);
 
@@ -256,13 +262,14 @@ void LogItem::bindChildGraph(QCustomPlot *Plot, LogItem *child) {
         connect(newValueAxis, SIGNAL(rangeChanged(QCPRange)), selfRect->axis(QCPAxis::atLeft), SLOT(rangeChanged(QCPRange)));
 
         auto childColor = child->getColor();
+        auto childLineWidth = child->getLineWidth();
         newValueAxis->setLabel(child->getName());
         newValueAxis->setLabelColor(childColor);
         newValueAxis->setTickLabelColor(childColor);
         newValueAxis->setPadding(10);
         newValueAxis->setLabelPadding(3);
         newValueAxis->setTickLength(4,4);
-        newValueAxis->setBasePen(QPen(childColor, 2));
+        newValueAxis->setBasePen(QPen(childColor, childLineWidth));
         newValueAxis->setTickPen(QPen(childColor));
         newValueAxis->setSubTickPen(QPen(childColor));
         child->setValueAxis(newValueAxis);

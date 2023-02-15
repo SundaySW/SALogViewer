@@ -22,16 +22,16 @@ public:
     int childCount() const;
     int columnCount() const;
     int childNumber();
-    T *parentItem();
+    T* parentItem();
     void setParentItem(T *parent);
     bool insertChildren(int position, int count, int columns);
     bool insertChildren(int position, T* item);
     bool insertColumns(int position, int columns);
     bool removeChildren(int position, int count);
     void removeChildren(int position);
-    T * moveChildren(int position, T *newParent);
+    T* moveChildren(int position, T *newParent);
     bool removeColumns(int position, int columns);
-    bool removeAllChildren();
+    void removeAllChildren();
     const QList<T*>& getMChildItems() const;
 protected:
     QList<T*> m_childItems;

@@ -7,6 +7,7 @@
 #include <view_treeview/treeModel.h>
 #include <view_load_items_from_db/itemsloader.h>
 #include <qcustomplot/qcustomplot.h>
+#include <view_load_items_from_csv/CSVItemsLoader.h>
 #include "LogItem/LogItem.h"
 
 QT_BEGIN_NAMESPACE
@@ -26,10 +27,12 @@ private:
     QFile* configFile;
     LogViewer* logViewer;
     LogItem* rootItem;
-    ItemsLoader* loader;
+    ItemsLoader* DBitemsLoader;
+    CSVItemsLoader* csvItemsLoader;
     TreeModel* treeModel;
     QCustomPlot* Plot;
-    QDialog* loaderDlg;
+    QDialog* loaderDBDlg;
+    QDialog* loaderCSVDlg;
     Settings_dlg* settingsDlg;
     Ui::MainWindow *ui;
 
@@ -37,7 +40,8 @@ private:
     void AddToLog(const QString &string, bool isError = false);
     void checkServicesConnection();
     void setupModelData();
-    void configLoaderDlg();
+    void configDBLoaderDlg();
+    void configCSVLoaderDlg();
     void setConnections();
     void configureUI();
     void closeEvent(QCloseEvent *event) override;

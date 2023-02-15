@@ -15,7 +15,7 @@ class dbsettingswdgt : public QWidget
 {
     Q_OBJECT
 public:
-    explicit dbsettingswdgt(QJsonObject &JsonConf, PSQL_Driver& databaseDriver, QWidget *parent = nullptr);
+    explicit dbsettingswdgt(QJsonObject &JsonConf, std::shared_ptr<PSQL_Driver> databaseDriver, QWidget *parent = nullptr);
     ~dbsettingswdgt();
     void Save();
     void Set();
@@ -25,7 +25,7 @@ private:
     QIcon connectIcon;
     QIcon disconnectIcon;
     QJsonObject& savedConf;
-    PSQL_Driver& dbDriver;
+    std::shared_ptr<PSQL_Driver> dbDriver;
     void setEditsStateDisabled(bool state);
     void updateView();
     Ui::dbsettingswdgt *ui;

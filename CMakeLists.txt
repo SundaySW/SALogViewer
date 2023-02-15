@@ -17,10 +17,12 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS PrintSupport)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Sql)
+# For OPENGl
+find_package(OpenGL REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGL)
+# end For OPENGl
 
 set(TS_FILES ProtosLogViewer_en_US.ts)
-
-add_subdirectory(qcustomplot)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/DB_Driver/*.*
@@ -43,11 +45,14 @@ set(PROJECT_SOURCES
         ${SOURCES}
         )
 
+add_subdirectory(qcustomplot)
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${PROJECT_NAME}
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ProtosLogViewer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -74,12 +79,27 @@ endif()
 #        TARGET ${PROJECT_NAME} PRE_BUILD
 #        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/psql_libs/lib ${CMAKE_CURRENT_BINARY_DIR}/
 #)
+add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND windeployqt "$<TARGET_FILE:${PROJECT_NAME}>"
+        VERBATIM
+)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE   Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(${PROJECT_NAME} PRIVATE   Qt${QT_VERSION_MAJOR}::PrintSupport)
-target_link_libraries(${PROJECT_NAME} PRIVATE   Qt${QT_VERSION_MAJOR}::Sql)
-target_compile_definitions(${PROJECT_NAME} PRIVATE QCUSTOMPLOT_USE_LIBRARY)
-target_link_libraries(${PROJECT_NAME} PUBLIC   Qt${QT_VERSION_MAJOR}::Widgets qcustomplot)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        Qt${QT_VERSION_MAJOR}::Widgets
+        Qt${QT_VERSION_MAJOR}::PrintSupport
+        Qt${QT_VERSION_MAJOR}::Sql
+        Qt${QT_VERSION_MAJOR}::Widgets qcustomplot
+
+        Qt${QT_VERSION_MAJOR}::OpenGL
+        ${OPENGL_LIBRARIES}
+        )
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+        QCUSTOMPLOT_USE_OPENGL
+        QCUSTOMPLOT_USE_LIBRARY
+        )
+
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -93,17 +113,17 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(ProtosLogViewer)
 endif()
 
-target_compile_options(${PROJECT_NAME}
-        PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
-#        -Werror
-        -Wduplicated-cond
-        -Wduplicated-branches
-        -Wlogical-op
-        -Wnull-dereference
-        -Wshadow
-        -Wconversion
-        -Wsign-conversion
-        )
+#target_compile_options(${PROJECT_NAME}
+#        PRIVATE
+#        -Wall
+#        -Wextra
+#        -Wpedantic
+##        -Werror
+#        -Wduplicated-cond
+#        -Wduplicated-branches
+#        -Wlogical-op
+#        -Wnull-dereference
+#        -Wshadow
+#        -Wconversion
+#        -Wsign-conversion
+#        )

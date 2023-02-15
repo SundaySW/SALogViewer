@@ -17,12 +17,11 @@ Q_OBJECT
 public:
     struct SavedGraphColor{
         QPen savedPen;
-        QCPGraph* savedGraph = nullptr;
-        QCPItemText* text = nullptr;
-        QCustomPlot* customPlot = nullptr;
-
+        QCPGraph* savedGraph;
+        QCPItemText* text;
+        QCustomPlot* customPlot;
         SavedGraphColor(QPen pen, QCPGraph* plottable, QCustomPlot* cPlot)
-            :savedPen(std::move(pen)), savedGraph(plottable), customPlot(cPlot)
+            :savedPen(pen), savedGraph(plottable), customPlot(cPlot), text(nullptr)
         {
             auto* decorator = new QCPSelectionDecorator();
             decorator->setPen(plottable->pen());
@@ -75,14 +74,15 @@ public:
             return QString("Min: %1\nMax: %2\nAvg: %3")
                     .arg(min).arg(max).arg(avg/newData.size(),0,10,3,'0');
         }
-        ~SavedGraphColor(){
+        void beforeDel(){
             savedGraph->setPen(savedPen);
             customPlot->removeItem(text);
         }
+        ~SavedGraphColor(){}
     };
 
     explicit LogViewer(QJsonObject&, QCustomPlot*, LogItem* root, QWidget* _parent = nullptr);
-    PSQL_Driver& getDbDriver();
+    std::shared_ptr<PSQL_Driver> getDbDriver();
     bool isDataBaseOk();
     void insertGraph(LogItem*, bool last = false);
     void removeGraph(LogItem*);
@@ -95,16 +95,15 @@ signals:
 private slots:
     void plotContextMenuRequest(const QPoint& pos);
 private:
+    std::shared_ptr<PSQL_Driver> dbDriver;
     QWidget* mainWin;
     QJsonObject& qJsonObject;
-    PSQL_Driver dbDriver;
     QCustomPlot* Plot;
     LogItem* rootItem;
     QCPMarginGroup* marginGroup;
     inline static int count;
     bool insertRight = false;
-    QMap<QCPGraph*, SavedGraphColor*> savedGraphs = {};
-
+    QMap<QCPGraph*, QSharedPointer<SavedGraphColor>> savedGraphs = {};
     QCPAxisRect *prepareRect(bool last);
     bool setPlot();
     void completeLastRect(QCPAxisRect*);

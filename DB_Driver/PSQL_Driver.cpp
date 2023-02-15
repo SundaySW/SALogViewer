@@ -141,7 +141,7 @@ bool PSQL_Driver::isAutoConnect() const {
     return autoConnect;
 }
 
-QSet<QString> &PSQL_Driver::getTableNames(){
+QSet<QString>& PSQL_Driver::getTableNames(){
     loadTableNames();
     return tableNames;
 }

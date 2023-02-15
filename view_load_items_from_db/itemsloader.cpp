@@ -1,19 +1,19 @@
 #include "itemsloader.h"
 #include "ui_itemsloader.h"
 
-ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *_parent) :
-    QWidget(_parent)
+ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *parent) :
+    QWidget(parent)
     ,ui(new Ui::ItemsLoader)
     ,logViewer(_logViewer)
     ,mainRootItem(_root)
     ,driver(logViewer->getDbDriver())
-    ,tableRootItem(new LogItem(QVector<QVariant>{"Name"}))
+    ,tableRootItem(new LogItem(QVector<QVariant>{"TableRoot"}))
 {
     ui->setupUi(this);
     tableTreeModel = new TreeModel(tableRootItem, this);
     ui->tableTreeView->setModel(tableTreeModel);
 
-    connect(ui->btn_confirm, &QPushButton::clicked, [this](){
+    connect(ui->btn_confirm, &QPushButton::clicked, [this, parent](){
         QModelIndexList indexes = ui->tableTreeView->selectionModel()->selectedIndexes();
         QVector<LogItem*> selectedItems;
         if (!indexes.empty()){
@@ -27,6 +27,7 @@ ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *_parent
         }
         tableTreeModel->endResetMe();
         emit needToResetModel();
+        parent->close();
     });
 }
 
@@ -42,7 +43,7 @@ void ItemsLoader::reFresh(){
 }
 
 void ItemsLoader::loadNamesFromDB() {
-    auto tables = driver.getTableNames();
+    auto tables = driver->getTableNames();
     auto checkSet = mainRootItem->getSetOfAllTabNames()
             .unite(tableRootItem->getSetOfAllTabNames());
     QVector<QVariant> dataIn = {""};

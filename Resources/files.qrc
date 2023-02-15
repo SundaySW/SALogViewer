@@ -19,6 +19,12 @@
         <file>expand_more.svg</file>
         <file>graph_icon.svg</file>
         <file>arrow_right.svg</file>
+        <file>open_file.svg</file>
+        <file>table_g.svg</file>
+        <file>csv.svg</file>
+        <file>csv_o.svg</file>
+        <file>column.svg</file>
+        <file>confirm_disabled.svg</file>
     </qresource>
     <qresource prefix="/css">
         <file>css/dbsettings.css</file>
