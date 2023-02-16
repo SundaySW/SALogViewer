@@ -25,6 +25,9 @@
         <file>csv_o.svg</file>
         <file>column.svg</file>
         <file>confirm_disabled.svg</file>
+        <file>opengl_g.svg</file>
+        <file>opengl_o.svg</file>
+        <file>watch.svg</file>
     </qresource>
     <qresource prefix="/css">
         <file>css/dbsettings.css</file>

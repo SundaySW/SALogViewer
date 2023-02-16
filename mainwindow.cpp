@@ -63,7 +63,9 @@ void MainWindow::setConnections(){
         if(who->isActive())
             logViewer->rebuildLayout();
     });
-
+    connect(ui->openGL_Btn, &QPushButton::clicked, [this](){
+        ui->openGL_Btn->setChecked(logViewer->manageOpenGl());
+    });
     connect(ui->settings_btn, &QPushButton::clicked, [this]{
         settingsDlg->show();
         settingsDlg->raise();
@@ -95,6 +97,7 @@ void MainWindow::setConnections(){
         AddToLog(str, err);
         checkServicesConnection();
     });
+
 }
 
 void MainWindow::setupModelData(){

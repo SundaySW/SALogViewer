@@ -9,7 +9,7 @@ Settings_dlg::Settings_dlg(LogViewer* logViewer, QJsonObject& cfg, QWidget *pare
     setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
     setWindowTitle(QString("Settings"));
     auto* mainLayout = new QVBoxLayout(this);
-    auto pDbConfigWidget = new dbsettingswdgt(cfg, logViewer->getDbDriver(), this);
+    auto pDbConfigWidget = new dbsettingswdgt(cfg, logViewer->getDbDriver(), logViewer, this);
     mainLayout->addWidget(pDbConfigWidget);
     this->setLayout(mainLayout);
     connect(pDbConfigWidget, &dbsettingswdgt::eventInDBConnection, [this](){emit eventInSettings("", false);});

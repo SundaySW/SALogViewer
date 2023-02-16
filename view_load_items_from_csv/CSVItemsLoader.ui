@@ -64,6 +64,61 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QComboBox" name="XColumnType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>120</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>DateTime</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Resources/files.qrc">
+          <normaloff>:/icons/dateTimeType.svg</normaloff>:/icons/dateTimeType.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>mSecs</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Resources/files.qrc">
+          <normaloff>:/icons/watch.svg</normaloff>:/icons/watch.svg</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Count</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Resources/files.qrc">
+          <normaloff>:/icons/lonlType.svg</normaloff>:/icons/lonlType.svg</iconset>
+        </property>
+       </item>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

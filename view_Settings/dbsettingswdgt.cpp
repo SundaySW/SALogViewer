@@ -3,11 +3,12 @@
 #include <utility>
 #include "ui_dbsettingswdgt.h"
 
-dbsettingswdgt::dbsettingswdgt(QJsonObject &JsonConf, std::shared_ptr<PSQL_Driver> databaseDriver, QWidget *parent):
+dbsettingswdgt::dbsettingswdgt(QJsonObject &JsonConf, QSharedPointer<PSQL_Driver> databaseDriver, LogViewer* logV, QWidget *parent):
     QWidget(parent)
     , savedConf(JsonConf)
     , dbDriver(std::move(databaseDriver))
     , ui(new Ui::dbsettingswdgt)
+    , logViewer(logV)
 {
     ui->setupUi(this);
     connectIcon.addFile(QString::fromUtf8(":/icons/connect.svg"), QSize(35, 35), QIcon::Normal, QIcon::Off);
@@ -29,6 +30,8 @@ dbsettingswdgt::dbsettingswdgt(QJsonObject &JsonConf, std::shared_ptr<PSQL_Drive
         updateView();
     });
     connect(ui->saveBtn, &QPushButton::clicked, [this](){Save();});
+    connect(ui->XColumnType,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(keyTypeChanged(int)));
 }
 
 void dbsettingswdgt::Save() {
@@ -82,4 +85,8 @@ void dbsettingswdgt::updateView() {
 dbsettingswdgt::~dbsettingswdgt()
 {
     delete ui;
+}
+
+void dbsettingswdgt::keyTypeChanged(int idx) {
+    logViewer->setKeyAxisDataType(static_cast<LogViewerItems::KeyType>(idx));
 }

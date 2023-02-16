@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QtSql/QSqlDatabase>
 #include <DB_Driver/PSQL_Driver.h>
+#include <LogViewer.h>
 #include "QJsonObject"
 #include "QIcon"
 
@@ -15,17 +16,20 @@ class dbsettingswdgt : public QWidget
 {
     Q_OBJECT
 public:
-    explicit dbsettingswdgt(QJsonObject &JsonConf, std::shared_ptr<PSQL_Driver> databaseDriver, QWidget *parent = nullptr);
+    explicit dbsettingswdgt(QJsonObject&, QSharedPointer<PSQL_Driver>, LogViewer*, QWidget* = nullptr);
     ~dbsettingswdgt();
     void Save();
     void Set();
 signals:
     void eventInDBConnection(const QString&, bool);
+private slots:
+    void keyTypeChanged(int idx);
 private:
     QIcon connectIcon;
     QIcon disconnectIcon;
     QJsonObject& savedConf;
-    std::shared_ptr<PSQL_Driver> dbDriver;
+    LogViewer* logViewer;
+    QSharedPointer<PSQL_Driver> dbDriver;
     void setEditsStateDisabled(bool state);
     void updateView();
     Ui::dbsettingswdgt *ui;

@@ -8,11 +8,12 @@
 #include <DB_Driver/PSQL_Driver.h>
 #include <LogItem/LogItem.h>
 #include <qcustomplot/qcustomplot.h>
+#include "CustomTicker/MsecTicker.h"
 
 #include <utility>
 #include "QWidget"
 
-class LogViewer: public QObject{
+class LogViewer: public QWidget{
 Q_OBJECT
 public:
     struct SavedGraphColor{
@@ -29,9 +30,11 @@ public:
             alphaColor.setAlpha(40);
             decorator->setBrush(QBrush(alphaColor));
             savedGraph->setSelectionDecorator(decorator);
-            savedGraph->setPen(QPen(QColor(LogVieverColor_middle)));
+            savedGraph->setPen(QPen(QColor(LogVieverColor_middle2)));
+            if(savedGraph->selection().dataRange().size()>2) setText();
         }
         void setText(){
+            if(savedGraph->selection().dataRange().size()<3) return;
             QCPItemText* lastItem = nullptr;
             if(!savedGraph->keyAxis()->axisRect()->items().isEmpty())
                 lastItem = dynamic_cast<QCPItemText*>(savedGraph->keyAxis()->axisRect()->items().last());
@@ -43,9 +46,9 @@ public:
                 text->setPositionAlignment(Qt::AlignHCenter | Qt::AlignBottom);
                 if(lastItem) {
                     text->position->setParentAnchor(lastItem->bottom);
-                    text->position->setCoords(0.2, 0);
+                    text->position->setCoords(0.1, 0);
                 }else
-                    text->position->setCoords(0.5, 0.9);
+                    text->position->setCoords(0.3, 0.9);
                 text->setTextAlignment(Qt::AlignHCenter);
                 QFont font = QFont("Rubik", 9, 4);
                 text->setFont(font);
@@ -82,29 +85,34 @@ public:
     };
 
     explicit LogViewer(QJsonObject&, QCustomPlot*, LogItem* root, QWidget* _parent = nullptr);
-    std::shared_ptr<PSQL_Driver> getDbDriver();
+    QSharedPointer<PSQL_Driver> getDbDriver();
     bool isDataBaseOk();
     void insertGraph(LogItem*, bool last = false);
     void removeGraph(LogItem*);
     void removeItem(LogItem*);
     void rebuildLayout();
-    void loadItemFromDB(LogItem *item);
+    bool manageOpenGl();
+    QJsonObject& getQJsonObject() const;
+    LogViewerItems::KeyType getKeyType() const;
+    void setKeyAxisDataType(LogViewerItems::KeyType);
 signals:
     void errorInDBToLog(const QString&);
     void eventInDBToLog(const QString&);
 private slots:
     void plotContextMenuRequest(const QPoint& pos);
 private:
-    std::shared_ptr<PSQL_Driver> dbDriver;
+    QSharedPointer<PSQL_Driver> dbDriver;
     QWidget* mainWin;
     QJsonObject& qJsonObject;
     QCustomPlot* Plot;
     LogItem* rootItem;
     QCPMarginGroup* marginGroup;
     inline static int count;
+    int savedXPos = 0;
     bool insertRight = false;
     QMap<QCPGraph*, QSharedPointer<SavedGraphColor>> savedGraphs = {};
-    QCPAxisRect *prepareRect(bool last);
+    LogViewerItems::KeyType keyType = LogViewerItems::DateTime;
+    QCPAxisRect *prepareRect();
     bool setPlot();
     void completeLastRect(QCPAxisRect*);
     void finishContainerRect(LogItem*);

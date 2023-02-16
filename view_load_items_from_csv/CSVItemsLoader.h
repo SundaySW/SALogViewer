@@ -17,24 +17,23 @@ public:
     explicit CSVItemsLoader(LogItem* root, LogViewer* logViewer, QWidget *parent = nullptr);
     ~CSVItemsLoader();
     void loadNamesFromCSV();
-    void loadNamesForKeyValue();
     void reFresh();
 signals:
     QVector<QString> needToResetModel();
+private slots:
+    void keyTypeChanged(int idx);
 private:
     LogViewer* logViewer;
     TreeModel* csvTreeModel;
     QString fileName;
     std::unique_ptr<CSVParser> csvParser;
-    QString keyAxisName;
+    QString keyAxisName{};
     std::optional<int> keyColumnIndex{};
     LogItem* csvRootItem;
     LogItem* mainRootItem;
     Ui::CSVItemsLoader *ui;
     void reFreshView();
     void setKeyAxisItem(LogItem *item);
-    void loadDataToItems(const QVector<LogItem*>&);
-
     void loadDataToItems();
 };
 

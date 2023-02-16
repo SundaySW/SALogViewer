@@ -29,19 +29,6 @@
 
 
 
-QToolTip {
-   background: #45494A;
-	color: #BBBBBB;
-}
-
-
-
-
-QMainWindow{
-}
-
-
-
 
 QLineEdit {
 	font-family: Rubik;
@@ -141,6 +128,33 @@ QTreeView::item:icon
 QTreeView::item:selected
 {
     background-color: #556166;
+}
+
+
+
+QScrollBar:vertical {
+    background: transparent;
+    width: 10px;
+	border: none;
+}
+QScrollBar::handle {
+	background: #545657;
+ 	border-radius: 4px;
+	min-height: 10px;
+}
+QScrollBar::add-line:vertical {
+    border-top: solid 5px transparent;
+    background: none;
+    height: 20px;
+    subcontrol-position: bottom;
+    subcontrol-origin: padding;
+}
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -200,8 +214,7 @@ QTreeView::item:selected
             </property>
             <property name="icon">
              <iconset resource="Resources/files.qrc">
-              <normaloff>:/icons/database.svg</normaloff>
-              <selectedon>:/icons/database_FILL1.svg</selectedon>:/icons/database.svg</iconset>
+              <normaloff>:/icons/database.svg</normaloff>:/icons/database.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -445,7 +458,7 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>70</height>
+        <height>50</height>
        </size>
       </property>
       <property name="sizeIncrement">
@@ -478,17 +491,52 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="dbLabel">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QPushButton" name="openGL_Btn">
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/files.qrc">
+          <normaloff>:/icons/opengl_g.svg</normaloff>
+          <normalon>:/icons/opengl_o.svg</normalon>
+          <disabledoff>:/icons/opengl_g.svg</disabledoff>:/icons/opengl_g.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="dbLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

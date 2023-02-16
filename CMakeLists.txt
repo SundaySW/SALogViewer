@@ -32,6 +32,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_db/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_csv/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/CSV/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/CustomTicker/*.*
         )
 
 set(PROJECT_SOURCES
@@ -47,42 +48,57 @@ set(PROJECT_SOURCES
 
 add_subdirectory(qcustomplot)
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(${PROJECT_NAME}
-        MANUAL_FINALIZATION
+add_executable(${PROJECT_NAME}
         ${PROJECT_SOURCES}
-    )
+        )
+
+#if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+#    qt_add_executable(${PROJECT_NAME}
+#        MANUAL_FINALIZATION
+#        ${PROJECT_SOURCES}
+#    )
 
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ProtosLogViewer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-else()
-    if(ANDROID)
-        add_library(${PROJECT_NAME} SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(${PROJECT_NAME}
-            ${PROJECT_SOURCES}
-        )
-    endif()
-
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-endif()
+#    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+#else()
+#    if(ANDROID)
+#        add_library(${PROJECT_NAME} SHARED
+#            ${PROJECT_SOURCES}
+#        )
+## Define properties for Android with Qt 5 after find_package() calls as:
+##    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+#    else()
+#        add_executable(${PROJECT_NAME}
+#            ${PROJECT_SOURCES}
+#        )
+#    endif()
+#
+#    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+#endif()
 
 #add_custom_command(
 #        TARGET ${PROJECT_NAME} PRE_BUILD
 #        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/psql_libs/lib ${CMAKE_CURRENT_BINARY_DIR}/
 #)
-add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND windeployqt "$<TARGET_FILE:${PROJECT_NAME}>"
-        VERBATIM
+
+#target_include_directories(${PROJECT_NAME}
+#        PRIVATE
+#        ${CMAKE_CURRENT_SOURCE_DIR}/DB_Driver
+#        ${CMAKE_CURRENT_SOURCE_DIR}/view_treeview
+#        ${CMAKE_CURRENT_SOURCE_DIR}/view_Settings
+#        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_db
+#        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_csv/
+#        ${CMAKE_CURRENT_SOURCE_DIR}/Resources
+#        ${CMAKE_CURRENT_SOURCE_DIR}/LogItem
+#)
+
+target_sources(${PROJECT_NAME}
+        PRIVATE
+        ${SOURCE_FILES}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -90,7 +106,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Sql
         Qt${QT_VERSION_MAJOR}::Widgets qcustomplot
-
         Qt${QT_VERSION_MAJOR}::OpenGL
         ${OPENGL_LIBRARIES}
         )
@@ -100,18 +115,23 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         QCUSTOMPLOT_USE_LIBRARY
         )
 
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND windeployqt "$<TARGET_FILE:${PROJECT_NAME}>"
+        VERBATIM
 )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(ProtosLogViewer)
-endif()
+#set_target_properties(${PROJECT_NAME} PROPERTIES
+#    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+#    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+#    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+#    MACOSX_BUNDLE TRUE
+#    WIN32_EXECUTABLE TRUE
+#)
+
+#if(QT_VERSION_MAJOR EQUAL 6)
+#    qt_finalize_executable(ProtosLogViewer)
+#endif()
 
 #target_compile_options(${PROJECT_NAME}
 #        PRIVATE

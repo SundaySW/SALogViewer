@@ -3,12 +3,17 @@ cmake_minimum_required(VERSION 3.16)
 project(qcustomplot LANGUAGES CXX)
 
 add_library(qcustomplot SHARED)
-target_compile_definitions(qcustomplot PRIVATE QCUSTOMPLOT_COMPILE_LIBRARY)
+target_compile_definitions(qcustomplot PRIVATE
+        QCUSTOMPLOT_COMPILE_LIBRARY
+        QCUSTOMPLOT_USE_OPENGL
+        QCUSTOMPLOT_USE_LIBRARY
+)
+
 target_include_directories(qcustomplot PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_sources(qcustomplot PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/qcustomplot.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/qcustomplot.h
-        )
+)
 
 target_link_libraries(qcustomplot PUBLIC
         Qt${QT_VERSION_MAJOR}::Core
@@ -17,4 +22,4 @@ target_link_libraries(qcustomplot PUBLIC
         Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::OpenGL
         ${OPENGL_LIBRARIES}
-        )
+)

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "ui_CSVItemsLoader.h"
+#include "QComboBox"
 
 CSVItemsLoader::CSVItemsLoader(LogItem* root, LogViewer* incLogViewer, QWidget *parent) :
     QWidget(parent),
@@ -21,9 +22,11 @@ CSVItemsLoader::CSVItemsLoader(LogItem* root, LogViewer* incLogViewer, QWidget *
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             return;
         csvParser = std::make_unique<CSVParser>(fileName);
+        reFreshView();
+        csvRootItem->removeAllChildren();
+        mainRootItem->removeAllChildren();
         reFresh();
         loadDataToItems();
-        reFreshView();
     });
 
     connect(ui->btn_confirm, &QPushButton::clicked, [this, parent](){
@@ -58,6 +61,8 @@ CSVItemsLoader::CSVItemsLoader(LogItem* root, LogViewer* incLogViewer, QWidget *
         ui->mainLabel->setText("CSV Items");
         ui->infoLabel->setText("Choose Items to log");
     });
+    connect(ui->XColumnType,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(keyTypeChanged(int)));
 }
 
 void CSVItemsLoader::setKeyAxisItem(LogItem* item){
@@ -87,7 +92,6 @@ void CSVItemsLoader::reFreshView(){
 }
 
 void CSVItemsLoader::loadNamesFromCSV(){
-    mainRootItem->removeAllChildren();
     auto tables = csvParser->getColumns();
     auto checkSet = mainRootItem->getSetOfAllTabNames()
             .unite(csvRootItem->getSetOfAllTabNames());
@@ -111,8 +115,16 @@ void CSVItemsLoader::loadDataToItems() {
         for(auto* item : csvRootItem->getMChildItems()){
             int itemDataIdx = csvParser->getColumnIndex(item->getTableName());
             if(itemDataIdx < batch.size())
-                item->getGraphData().append(QCPGraphData(batch[keyColumnIndex.value_or(0)].toDouble(), batch[itemDataIdx].toDouble()));
+                item->getGraphData().append(
+                        QCPGraphData(
+                                LogViewerItems::prepareKeyData(batch[keyColumnIndex.value_or(0)], logViewer->getKeyType()),
+                                batch[itemDataIdx].toDouble())
+                        );
         }
         batch = csvParser->makeNextBatchOfData();
     }
+}
+
+void CSVItemsLoader::keyTypeChanged(int idx){
+    logViewer->setKeyAxisDataType(static_cast<LogViewerItems::KeyType>(idx));
 }

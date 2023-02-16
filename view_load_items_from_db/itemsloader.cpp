@@ -23,7 +23,7 @@ ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *parent)
         tableTreeModel->beginResetMe();
         for(auto* item: selectedItems){
             tableRootItem->moveChildren(item->childNumber(), mainRootItem);
-            logViewer->loadItemFromDB(item);
+            loadDataToItem(item);
         }
         tableTreeModel->endResetMe();
         emit needToResetModel();
@@ -52,5 +52,27 @@ void ItemsLoader::loadNamesFromDB() {
         dataIn[0] = item;
         auto* newItem = new LogItem(dataIn, tableRootItem);
         tableRootItem->appendChild(newItem);
+    }
+}
+
+void ItemsLoader::loadDataToItem(LogItem* item){
+    auto& itemData = item->getGraphData();
+    auto keyColumn = logViewer->getQJsonObject().value("DBConfObject")["KeyColumnName"].toString();
+    auto valueColumn = logViewer->getQJsonObject().value("DBConfObject")["ValueColumnName"].toString();
+    QVector<QVariant>keysVector;
+    QVector<QVariant>valueVector;
+    driver->getLogItemData(item->getTableName(), keysVector, keyColumn);
+    driver->getLogItemData(item->getTableName(), valueVector, valueColumn);
+    if(keysVector.size() != valueVector.size()){
+        auto resBtn = QMessageBox::question( this, "Problem while loading DataBase Data",
+                                             tr("Key data size not equal value data size\n"),
+                                             QMessageBox::Ok);
+    }
+    itemData.clear();
+    itemData.resize(keysVector.size());
+    for (int i = 0; i < keysVector.size(); ++i)
+    {
+        itemData[i].key = LogViewerItems::prepareKeyData(keysVector[i],logViewer->getKeyType());
+        itemData[i].value = valueVector[i].toDouble();
     }
 }

@@ -16,14 +16,6 @@
 #include "QSet"
 #include "main.h"
 
-namespace LogViewerItems{
-    enum Type: int{
-        Regular,
-        Container,
-        Root
-    };
-}
-
 class LogItem : public QObject, public TreeItem<LogItem>{
 Q_OBJECT
 public:

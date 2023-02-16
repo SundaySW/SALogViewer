@@ -19,13 +19,15 @@ public:
     void reFresh();
 signals:
     QVector<QString> needToResetModel();
+
 private:
     LogItem* tableRootItem;
     LogItem* mainRootItem;
     TreeModel* tableTreeModel;
     LogViewer* logViewer;
-    std::shared_ptr<PSQL_Driver> driver;
+    QSharedPointer<PSQL_Driver> driver;
     Ui::ItemsLoader *ui;
+    void loadDataToItem(LogItem* item);
 };
 
 #endif // ITEMSLOADER_H

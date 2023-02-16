@@ -17,7 +17,6 @@
 class CSVParser {
 public:
     explicit CSVParser(QString& fileName);
-    void prepareColumnNames();
     QVector<QVariant> makeNextBatchOfData();
     QSet<QString> getColumns();
     int getColumnIndex(const QString& columnName);
@@ -28,6 +27,7 @@ private:
     QDataStream* dataStream;
     QByteArray data;
     QVector<QString> columns;
+    void prepareColumnNames();
 };
 
 
