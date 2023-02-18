@@ -14,7 +14,9 @@ LogViewer::LogViewer(QJsonObject &inJson, QCustomPlot* inPlot, LogItem* root, QW
     ,dbDriver(QSharedPointer<PSQL_Driver>(new PSQL_Driver(inJson)))
     ,Plot(inPlot)
     ,rootItem(root)
+    ,toolTipFrame(new ToolTipFrame(mainWin))
 {
+    toolTipFrame->hide();
     dbDriver->errorInDBDriver = [this](const QString& errorStr){ errorInDBToLog(errorStr);};
     dbDriver->eventInDBDriver = [this](const QString& eventStr){ eventInDBToLog(eventStr);};
     if(dbDriver->isAutoConnect()) dbDriver->setConnection();
@@ -30,13 +32,12 @@ bool LogViewer::isDataBaseOk() {
 }
 
 bool LogViewer::setPlot(){
-
     Plot->setOpenGl(true);
     Plot->setNotAntialiasedElement(QCP::AntialiasedElement::aeAxes);
     Plot->plotLayout()->clear();
     marginGroup = new QCPMarginGroup(Plot);
     Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("/../Resources/background.png")));
-    Plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes | QCP::iMultiSelect);
+    Plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iMultiSelect | QCP::iSelectAxes);
     Plot->setContextMenuPolicy(Qt::CustomContextMenu);
     Plot->plotLayout()->setFillOrder(QCPLayoutGrid::FillOrder::foRowsFirst);
     Plot->plotLayout()->setRowSpacing(0);
@@ -49,15 +50,14 @@ bool LogViewer::setPlot(){
             axis->axisRect()->axis(QCPAxis::atLeft)->rescale();
         Plot->replot();
     });
+
     connect(Plot, &QCustomPlot::mouseWheel, [this](QWheelEvent* event){
-//        if(Plot->selectedAxes().contains(Plot->axisRectAt(event->position())->axis(QCPAxis::atBottom)))
-//            Plot->axisRectAt(event->position())->setRangeZoom(Qt::Horizontal);
-//        else
-//            Plot->axisRectAt(event->position())->setRangeZoom(Qt::Vertical);
         if(QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
             Plot->axisRectAt(event->position())->setRangeZoom(Qt::Horizontal);
         else
             Plot->axisRectAt(event->position())->setRangeZoom(Qt::Vertical);
+        if(Plot->axisRectAt(event->position())){
+        }
     });
 
     connect(Plot, &QCustomPlot::selectionChangedByUser, [this](){
@@ -66,7 +66,9 @@ bool LogViewer::setPlot(){
                 if(savedGraphs.contains(selectedGraph)){
                     savedGraphs.value(selectedGraph)->setText();
                 }else
-                    savedGraphs.insert(selectedGraph, QSharedPointer<SavedGraphColor>(new SavedGraphColor(selectedGraph->pen(), selectedGraph, Plot)));
+                    savedGraphs.insert(selectedGraph,
+                            QSharedPointer<LogViewerItems::SavedGraphColor>(
+                                    new LogViewerItems::SavedGraphColor(selectedGraph->pen(), selectedGraph, Plot)));
             }
         }
         for(auto it = savedGraphs.begin(); it != savedGraphs.end();){
@@ -80,35 +82,54 @@ bool LogViewer::setPlot(){
 
     connect(Plot, &QCustomPlot::mouseMove, [this](QMouseEvent* event){
         if(QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier)) {
-            if(!savedXPos)savedXPos = event->pos().x();
-            if(QGuiApplication::keyboardModifiers().testFlag(Qt::AltModifier))
-                savedXPos = event->pos().x();
             auto* rect = Plot->axisRectAt(event->pos());
-            auto cur = cursor();
-            cur.setPos(Plot->mapToGlobal(QPoint(savedXPos, event->pos().y())));
-            setCursor(cur);
             if(rect){
                 double coord = rect->axis(QCPAxis::atBottom)->pixelToCoord(event->pos().x());
                 double key = rect->graphs().first()->data()->findBegin(coord)->key;
-                double y = rect->graphs().first()->data()->findBegin(coord)->value;
-                QToolTip::showText(Plot->mapToGlobal(event->pos()),
-                                   QString("Key: %1\nValue: %2")
-                                   .arg(QDateTime::fromSecsSinceEpoch(key).toString("hh:mm:ss"))
-                                   .arg(y));
+                makeToolTipData(key);
+                toolTipFrame->resetData(toolTipData);
+                toolTipFrame->show();
+                auto pos = event->pos();
+                pos.setY(pos.y()+20);
+                pos.setX(pos.x()+20);
+                toolTipFrame->move(Plot->mapTo(mainWin, pos));
             }
         }
-
     });
+
     connect(Plot, &QCustomPlot::mousePress, [this](QMouseEvent*  event){
         if(QGuiApplication::keyboardModifiers().testFlag(Qt::AltModifier)){
-            for(auto* item : rootItem->getMChildItems())
-                if(item->isIamContainer()) return;
+            auto* rect = Plot->axisRectAt(event->pos());
+            if(rect && rect->graphs().size()>1) return;
             Plot->setSelectionRectMode(QCP::srmSelect);
         }
         else
             Plot->setSelectionRectMode(QCP::srmNone);
     });
+
+    connect(Plot, &QCustomPlot::mouseDoubleClick, [this](QMouseEvent*  event) {
+        if(QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+            auto* rect = Plot->axisRectAt(event->pos());
+            if(rect){
+                rect->axis(QCPAxis::atBottom)->rescale();
+                Plot->replot();
+            }
+        }
+    });
     return true;
+}
+
+void LogViewer::makeToolTipData(double key){
+    toolTipData.clear();
+    for(auto* rect: Plot->axisRects()){
+        for(auto* graph : rect->graphs()){
+            auto* item = getItemByGraph(graph);
+            toolTipData.append(LogViewerItems::ToolTipData{
+                    graph->pen().color(),
+                    item->getName(),
+                    graph->data()->findBegin(key)->value});
+        }
+    }
 }
 
 void LogViewer::insertGraph(LogItem *item, bool last){
@@ -208,12 +229,14 @@ QCPAxisRect* LogViewer::prepareRect() {
     topAxis->setTickLabels(false);
     topAxis->setSubTicks(false);
     topAxis->setBasePen(Qt::NoPen);
+    topAxis->setSelectableParts(QCPAxis::SelectablePart::spNone);
 
     bottomAxis->setOffset(0);
     bottomAxis->setTickLabels(false);
     bottomAxis->setBasePen(Qt::NoPen);
     bottomAxis->setTickPen(Qt::NoPen);
     bottomAxis->setSubTickPen(Qt::NoPen);
+    bottomAxis->setSelectableParts(QCPAxis::SelectablePart::spNone);
 
     if(insertRight){
         leftAxis->setTickLabels(false);
@@ -251,18 +274,7 @@ void LogViewer::completeLastRect(QCPAxisRect *rect){
     bottomAxis->setTickPen(QPen(QColor(LogVieverColor_white)));
     bottomAxis->setBasePen(QPen(QColor(LogVieverColor_white),2));
     bottomAxis->setSubTickPen(QPen(QColor(LogVieverColor_white)));
-
-    if(keyType == LogViewerItems::DateTime){
-        QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
-        dateTimeTicker->setDateTimeFormat("MM.dd-hh:mm");
-        bottomAxis->setTicker(dateTimeTicker);
-    }
-    else if(keyType == LogViewerItems::mSecs){
-        QSharedPointer<MsecTicker> msecTicker(new MsecTicker);
-        bottomAxis->setTicker(msecTicker);
-    }else{
-
-    }
+    LogViewerItems::bindTickerToAxis(bottomAxis, keyType);
 
     QPen tickerPen = QPen(QColor(LogVieverColor_white), 2, Qt::SolidLine);
     QFont bottomTickFont = QFont("Rubik", 9, 4);
@@ -284,6 +296,7 @@ void LogViewer::plotContextMenuRequest(const QPoint &pos){
 
 void LogViewer::makeMeasurementDlg(const QPoint &pos){
     auto selGraphs = Plot->selectedGraphs();
+    Plot->selectedPlottables();
     for(auto* graph : selGraphs){
         auto dataRange = graph->selection().dataRange();
         auto graphData = graph->data();
@@ -292,19 +305,9 @@ void LogViewer::makeMeasurementDlg(const QPoint &pos){
         newData.reserve(dataRange.size());
         for(auto it = graphData->at(dataRange.begin()); it != graphData->at(dataRange.end()); ++it)
             newData.append(QCPGraphData(it->key, it->value));
-        LogItem* currentItem;
-        for(auto* item: rootItem->getMChildItems()){
-            if(item->getGraph() == graph){
-                currentItem = item;
-                break;
-            }
-            for(auto* innerItem: item->getMChildItems())
-                if(innerItem->getGraph() == graph){
-                    currentItem = item;
-                    break;
-                }
-        }
-        auto* measurementFrame = new MeasurementView(newData, currentItem, dlg);
+        LogItem* currentItem = getItemByGraph(graph);
+        auto* measurementFrame = new MeasurementView(newData, savedGraphs.value(graph)->savedPen.color(), dlg);
+        measurementFrame->setBottomAxis(keyType);
         dlg->setWindowTitle(QString("Measurement for %1").arg(currentItem->getName()));
         auto* diagLayout = new QVBoxLayout();
         diagLayout->addWidget(measurementFrame);
@@ -312,6 +315,20 @@ void LogViewer::makeMeasurementDlg(const QPoint &pos){
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->show();
     }
+}
+
+LogItem* LogViewer::getItemByGraph(QCPGraph* graph){
+    auto* retVal = rootItem;
+    for(auto* item: rootItem->getMChildItems()){
+        if(item->getGraph() == graph){
+            retVal = item; break;
+        }
+        for(auto* innerItem: item->getMChildItems())
+            if(innerItem->getGraph() == graph){
+                retVal = innerItem; break;
+            }
+    }
+    return retVal;
 }
 
 bool LogViewer::manageOpenGl() {

@@ -134,13 +134,13 @@ QTreeView::item:selected
 
 QScrollBar:vertical {
     background: transparent;
-    width: 10px;
+    width: 7px;
 	border: none;
 }
 QScrollBar::handle {
 	background: #545657;
  	border-radius: 4px;
-	min-height: 10px;
+	min-height: 7px;
 }
 QScrollBar::add-line:vertical {
     border-top: solid 5px transparent;
