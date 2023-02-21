@@ -17,42 +17,57 @@
 #define LogVieverColor_selectedGraph QRgb(0xbd8e3e)
 
 namespace LogViewerItems{
-    enum Type: int{
-        Regular,
-        Container,
-        Root
-    };
-    enum KeyType: int{
-        DateTime = 0,
-        mSecs = 1,
-        Count = 2
-    };
-
-    inline static double prepareKeyData(const QVariant& data, KeyType keyType){
-        switch (keyType) {
-            case DateTime:
-                return QCPAxisTickerDateTime::dateTimeToKey(data.toDateTime().toUTC());
-            case mSecs:
-            case Count:
-            default:
-                return data.toDouble();
+        enum Type: int{
+            Regular,
+            Container,
+            Root
+        };
+        enum KeyType: int{
+            DateTime = 0,
+            mSecs = 1,
+            Count = 2
+        };
+        enum LastSource{
+            DataBase,
+            CSV
+        };
+        inline static double prepareKeyData(const QVariant& data, KeyType keyType){
+            switch (keyType) {
+                case DateTime:
+                    return QCPAxisTickerDateTime::dateTimeToKey(data.toDateTime().toUTC());
+                case mSecs:
+                case Count:
+                default:
+                    return data.toDouble();
+            }
         }
-    }
-    inline static void bindTickerToAxis(QCPAxis* axis, KeyType keyType){
-        if(keyType == DateTime){
-            QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
-            dateTimeTicker->setDateTimeFormat("MM.dd-hh:mm");
-            axis->setTicker(dateTimeTicker);
-        }
-        else if(keyType == mSecs){
-            QSharedPointer<MsecTicker> msecTicker(new MsecTicker);
-            axis->setTicker(msecTicker);
-        }else{
+        inline static void bindTickerToAxis(QCPAxis* axis, KeyType keyType){
+            if(keyType == DateTime){
+                QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
+                dateTimeTicker->setDateTimeFormat("MM.dd-hh:mm:ss");
+                axis->setTicker(dateTimeTicker);
+            }
+            else if(keyType == mSecs){
+                QSharedPointer<MsecTicker> msecTicker(new MsecTicker);
+                axis->setTicker(msecTicker);
+            }else{
 
+            }
         }
-    }
 
-    struct SavedGraphColor{
+        inline static QString makeKeyValueString(double value, KeyType keyType){
+            if(keyType == DateTime){
+                QDateTime dateTime = QDateTime::fromSecsSinceEpoch(value);
+                return dateTime.toString("MM.dd-hh:mm:ss zzz");
+            }
+            else if(keyType == mSecs){
+                return MsecTicker::getString(value);
+            }else{
+                return MsecTicker::getString(value);
+            }
+        }
+
+        struct SavedGraphColor{
         QPen savedPen;
         QCPGraph* savedGraph;
         QCPItemText* text;

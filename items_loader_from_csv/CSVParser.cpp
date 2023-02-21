@@ -20,15 +20,27 @@ void CSVParser::prepareColumnNames(){
     QByteArray line = dataStream->device()->readLine();
     columns.clear();
     for(const auto& name : line.split(','))
-        columns.append(name);
+        columns.append(name.trimmed());
+}
+
+void CSVParser::resetColumns(const QList<QByteArray>& line){
+    columns.clear();
+    for(const auto& name : line)
+        columns.append(name.trimmed());
 }
 
 QVector<QVariant> CSVParser::makeNextBatchOfData(){
     QVector<QVariant> retVal{};
     QByteArray line = dataStream->device()->readLine();
     if(line.isEmpty()) return retVal;
-    for(const auto& value : line.split(','))
-        retVal.append(value);
+    auto splitList = line.split(',');
+    if(splitList[0] == columns[0]){
+        resetColumns(splitList);
+        retVal.append("update");
+    }
+    else
+        for(const auto& value : splitList)
+            retVal.append(value);
     return retVal;
 }
 

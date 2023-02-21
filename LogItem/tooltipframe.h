@@ -15,7 +15,7 @@ class ToolTipFrame : public QFrame
 public:
     explicit ToolTipFrame(QWidget *parent = nullptr);
     ~ToolTipFrame();
-    void resetData(const QVector<LogViewerItems::ToolTipData>& newData);
+    void resetData(const QVector<LogViewerItems::ToolTipData> &newData, const QString &keyValue);
 private:
     QListWidget* list;
     Ui::ToolTipFrame *ui;

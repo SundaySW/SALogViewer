@@ -2,6 +2,12 @@
 #include "ui_measurementview.h"
 #include "main.h"
 
+#ifdef _BUILD_TYPE_
+#define CURRENT_BUILD_TYPE_ _BUILD_TYPE_
+#else
+#define CURRENT_BUILD_TYPE_ "CHECK CMAKE"
+#endif
+
 MeasurementView::MeasurementView(const QVector<QCPGraphData> &graphData, const QColor& itemColor, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MeasurementView)
@@ -50,7 +56,8 @@ void MeasurementView::countSetValues(const QVector<QCPGraphData> &graphData) {
 
 void MeasurementView::setPlot(const QVector<QCPGraphData> &graphData, const QColor& itemColor) {
     Plot->plotLayout()->clear();
-    Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("/../Resources/background.png")));
+    auto pathToFile = QString(CURRENT_BUILD_TYPE_) == "Debug" ? "/../" : "/";
+    Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("%1/Resources/background.png").arg(pathToFile)));
 
     selfRect = new QCPAxisRect(Plot);
     auto* topAxis = selfRect->axis(QCPAxis::atTop);

@@ -4,16 +4,18 @@
 #include "ui_CSVItemsLoader.h"
 #include "QComboBox"
 
-CSVItemsLoader::CSVItemsLoader(LogItem* root, LogViewer* incLogViewer, QWidget *parent) :
+CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *storedRoot, QWidget *parent) :
     QWidget(parent),
     logViewer(incLogViewer),
     mainRootItem(root),
-    csvRootItem(new LogItem(QVector<QVariant>{"CSVRoot"})),
+    csvRootItem(storedRoot),
     ui(new Ui::CSVItemsLoader)
 {
     ui->setupUi(this);
     csvTreeModel = new TreeModel(csvRootItem, this);
     ui->csvTreeView->setModel(csvTreeModel);
+    ui->btn_confirm->setVisible(false);
+    ui->btn_confirm_key->setVisible(false);
 
     connect(ui->openFile, &QPushButton::clicked, [this](){
         fileName = QFileDialog::getOpenFileName(this,
@@ -40,7 +42,7 @@ CSVItemsLoader::CSVItemsLoader(LogItem* root, LogViewer* incLogViewer, QWidget *
         for(auto* item: selectedItems)
             csvRootItem->moveChildren(item->childNumber(), mainRootItem);
         csvTreeModel->endResetMe();
-        emit needToResetModel();
+        emit needToResetModel("FileName: "+fileName.split('/').last());
         parent->close();
     });
 
@@ -112,17 +114,36 @@ CSVItemsLoader::~CSVItemsLoader()
 void CSVItemsLoader::loadDataToItems() {
     auto batch = csvParser->makeNextBatchOfData();
     while(!batch.empty()){
-        for(auto* item : csvRootItem->getMChildItems()){
-            int itemDataIdx = csvParser->getColumnIndex(item->getTableName());
-            if(itemDataIdx < batch.size())
-                item->getGraphData().append(
-                        QCPGraphData(
-                                LogViewerItems::prepareKeyData(batch[keyColumnIndex.value_or(0)], logViewer->getKeyType()),
-                                batch[itemDataIdx].toDouble())
-                        );
+        if(batch[0] == "update"){
+            updateItems();
+        }
+        else{
+            for(auto* item : csvRootItem->getMChildItems()){
+                int itemDataIdx = csvParser->getColumnIndex(item->getTableName());
+                if(itemDataIdx>=0 && itemDataIdx < batch.size())
+                    item->getGraphData().append(
+                            QCPGraphData(
+                                    LogViewerItems::prepareKeyData(batch[keyColumnIndex.value_or(0)], logViewer->getKeyType()),
+                                    batch[itemDataIdx].toDouble())
+                                    );
+            }
         }
         batch = csvParser->makeNextBatchOfData();
     }
+}
+
+void CSVItemsLoader::updateItems() {
+    csvTreeModel->beginResetMe();
+    auto tables = csvParser->getColumns();
+    auto checkSet = csvRootItem->getSetOfAllTabNames();
+    QVector<QVariant> dataIn = {""};
+    for (const auto &item: tables) {
+        if (checkSet.contains(item)) continue;
+        dataIn[0] = item;
+        auto *newItem = new LogItem(dataIn, csvRootItem);
+        csvRootItem->appendChild(newItem);
+    }
+    csvTreeModel->endResetMe();
 }
 
 void CSVItemsLoader::keyTypeChanged(int idx){

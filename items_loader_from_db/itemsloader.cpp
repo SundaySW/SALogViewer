@@ -26,7 +26,7 @@ ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *parent)
             loadDataToItem(item);
         }
         tableTreeModel->endResetMe();
-        emit needToResetModel();
+        emit needToResetModel("DataBase name: " + logViewer->getQJsonObject().value("DBConfObject")["DatabaseName"].toString());
         parent->close();
     });
 }

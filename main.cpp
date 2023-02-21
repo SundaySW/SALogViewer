@@ -4,7 +4,11 @@
 #include <QLocale>
 #include <QTranslator>
 
-
+#ifdef _VER
+#define CURRENT_VER _VER
+#else
+#define CURRENT_VER "CHECK CMAKE"
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +24,7 @@ int main(int argc, char *argv[])
         }
     }
     MainWindow w;
+    w.setWindowTitle(QString("SaLogViewer %1").arg(CURRENT_VER));
     w.show();
     return a.exec();
 }

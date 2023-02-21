@@ -4,7 +4,7 @@
 <context>
     <name>CSVItemsLoader</name>
     <message>
-        <location filename="view_load_items_from_csv/CSVItemsLoader.ui" line="20"/>
+        <location filename="items_loader_from_csv/CSVItemsLoader.ui" line="20"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_CSVItemsLoader.h" line="154"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_load_items_from_csv.h" line="117"/>
         <location filename="cmake-build-release/SALogViewer_autogen/include/ui_CSVItemsLoader.h" line="154"/>
@@ -12,14 +12,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view_load_items_from_csv/CSVItemsLoader.ui" line="32"/>
+        <location filename="items_loader_from_csv/CSVItemsLoader.ui" line="32"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_CSVItemsLoader.h" line="155"/>
         <location filename="cmake-build-release/SALogViewer_autogen/include/ui_CSVItemsLoader.h" line="155"/>
         <source>Key Axis Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view_load_items_from_csv/CSVItemsLoader.ui" line="78"/>
+        <location filename="items_loader_from_csv/CSVItemsLoader.ui" line="78"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_CSVItemsLoader.h" line="157"/>
         <location filename="cmake-build-release/SALogViewer_autogen/include/ui_CSVItemsLoader.h" line="157"/>
         <source>Choose item to be on X Axis</source>
@@ -36,12 +36,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view_load_items_from_csv/CSVItemsLoader.cpp" line="19"/>
+        <location filename="items_loader_from_csv/CSVItemsLoader.cpp" line="19"/>
         <source>Open csv</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view_load_items_from_csv/CSVItemsLoader.cpp" line="19"/>
+        <location filename="items_loader_from_csv/CSVItemsLoader.cpp" line="19"/>
         <source>csv Files (*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -49,7 +49,7 @@
 <context>
     <name>ItemsLoader</name>
     <message>
-        <location filename="view_load_items_from_db/itemsloader.ui" line="20"/>
+        <location filename="items_loader_from_db/itemsloader.ui" line="20"/>
         <location filename="build-ProtosLogViewer-Desktop-Debug/ProtosLogViewer_autogen/include/ui_itemsloader.h" line="174"/>
         <location filename="cmake-build-debug/ProtosLogViewer_autogen/include/ui_itemsloader.h" line="144"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_itemsloader.h" line="144"/>
@@ -58,7 +58,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view_load_items_from_db/itemsloader.ui" line="41"/>
+        <location filename="items_loader_from_db/itemsloader.ui" line="41"/>
         <location filename="build-ProtosLogViewer-Desktop-Debug/ProtosLogViewer_autogen/include/ui_itemsloader.h" line="175"/>
         <location filename="cmake-build-debug/ProtosLogViewer_autogen/include/ui_itemsloader.h" line="145"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_itemsloader.h" line="145"/>
@@ -67,7 +67,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view_load_items_from_db/itemsloader.ui" line="62"/>
+        <location filename="items_loader_from_db/itemsloader.ui" line="62"/>
         <location filename="cmake-build-debug/ProtosLogViewer_autogen/include/ui_itemsloader.h" line="146"/>
         <location filename="cmake-build-debug/SALogViewer_autogen/include/ui_itemsloader.h" line="146"/>
         <location filename="cmake-build-release/SALogViewer_autogen/include/ui_itemsloader.h" line="146"/>

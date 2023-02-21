@@ -4,9 +4,9 @@
 
 #include "MsecTicker.h"
 
-MsecTicker::MsecTicker() :
-        mTimeFormat(QLatin1String("mm:ss:zzz"))
+MsecTicker::MsecTicker()
 {
+    mTimeFormat = QLatin1String("mm:ss:zzz");
 }
 
 void MsecTicker::setTimeFormat(const QString& format)
@@ -15,6 +15,11 @@ void MsecTicker::setTimeFormat(const QString& format)
 }
 
 QString MsecTicker::getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision) {
+    if(tick < 0) return QString("00:00:000");
+    return QDateTime::fromMSecsSinceEpoch(tick).toUTC().toString(mTimeFormat);
+}
+
+QString MsecTicker::getString(double tick) {
     if(tick < 0) return QString("00:00:000");
     return QDateTime::fromMSecsSinceEpoch(tick).toUTC().toString(mTimeFormat);
 }

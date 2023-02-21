@@ -28,6 +28,8 @@ private:
     QByteArray data;
     QVector<QString> columns;
     void prepareColumnNames();
+
+    void resetColumns(const QList<QByteArray> &line);
 };
 
 

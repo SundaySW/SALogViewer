@@ -402,7 +402,7 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
            <bool>true</bool>
           </property>
           <property name="uniformRowHeights">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>

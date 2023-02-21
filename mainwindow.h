@@ -27,6 +27,8 @@ private:
     QFile* configFile;
     LogViewer* logViewer;
     LogItem* rootItem;
+    LogItem* storedRoot;
+    LogViewerItems::LastSource lastSource;
     ItemsLoader* DBitemsLoader;
     CSVItemsLoader* csvItemsLoader;
     TreeModel* treeModel;

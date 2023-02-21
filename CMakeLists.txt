@@ -28,9 +28,9 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/DB_Driver/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/view_Settings/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/LogItem/*.*
-        ${CMAKE_CURRENT_SOURCE_DIR}/view_treeview/*.*
-        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_db/*.*
-        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_csv/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/TreeModel/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/items_loader_from_db/*.*
+        ${CMAKE_CURRENT_SOURCE_DIR}/items_loader_from_csv/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/CSV/*.*
         ${CMAKE_CURRENT_SOURCE_DIR}/CustomTicker/*.*
         )
@@ -46,60 +46,49 @@ set(PROJECT_SOURCES
         ${SOURCES}
         )
 
-add_subdirectory(qcustomplot)
+#add_subdirectory(qcustomplot)
 
 add_executable(${PROJECT_NAME}
         ${PROJECT_SOURCES}
         )
 
-#if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-#    qt_add_executable(${PROJECT_NAME}
-#        MANUAL_FINALIZATION
-#        ${PROJECT_SOURCES}
-#    )
-
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET ProtosLogViewer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-
-#    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-#else()
-#    if(ANDROID)
-#        add_library(${PROJECT_NAME} SHARED
-#            ${PROJECT_SOURCES}
-#        )
-## Define properties for Android with Qt 5 after find_package() calls as:
-##    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-#    else()
-#        add_executable(${PROJECT_NAME}
-#            ${PROJECT_SOURCES}
-#        )
-#    endif()
-#
-#    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-#endif()
-
-#add_custom_command(
-#        TARGET ${PROJECT_NAME} PRE_BUILD
-#        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/psql_libs/lib ${CMAKE_CURRENT_BINARY_DIR}/
-#)
-
-#target_include_directories(${PROJECT_NAME}
-#        PRIVATE
-#        ${CMAKE_CURRENT_SOURCE_DIR}/DB_Driver
-#        ${CMAKE_CURRENT_SOURCE_DIR}/view_treeview
-#        ${CMAKE_CURRENT_SOURCE_DIR}/view_Settings
-#        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_db
-#        ${CMAKE_CURRENT_SOURCE_DIR}/view_load_items_from_csv/
-#        ${CMAKE_CURRENT_SOURCE_DIR}/Resources
-#        ${CMAKE_CURRENT_SOURCE_DIR}/LogItem
-#)
-
 target_sources(${PROJECT_NAME}
         PRIVATE
         ${SOURCE_FILES}
 )
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    enable_language("RC")
+    set (WIN32_RESOURCES Resource/resource.rc)
+endif()
+
+IF(CMAKE_BUILD_TYPE MATCHES Release)
+    message("Release build!")
+    set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE true)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/saved_params.json ${CMAKE_CURRENT_BINARY_DIR}/saved_params.json COPYONLY)
+    add_custom_command(
+            TARGET ${PROJECT_NAME} PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resource/ ${CMAKE_CURRENT_BINARY_DIR}/Resource/
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources/ ${CMAKE_CURRENT_BINARY_DIR}/Resources/
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/psql_libs/lib ${CMAKE_CURRENT_BINARY_DIR}/
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/qcustomplot/bin ${CMAKE_CURRENT_BINARY_DIR}/
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/deploy_libs ${CMAKE_CURRENT_BINARY_DIR}/
+    )
+    add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND windeployqt "$<TARGET_FILE:${PROJECT_NAME}>"
+            VERBATIM
+    )
+    add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/CMakeCache.txt
+            COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake
+            COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/Makefile
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/qcustomplot
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_autogen
+    )
+ENDIF()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
@@ -114,24 +103,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         QCUSTOMPLOT_USE_OPENGL
         QCUSTOMPLOT_USE_LIBRARY
         )
-
-add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND windeployqt "$<TARGET_FILE:${PROJECT_NAME}>"
-        VERBATIM
-)
-
-#set_target_properties(${PROJECT_NAME} PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-#    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-#    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-#    MACOSX_BUNDLE TRUE
-#    WIN32_EXECUTABLE TRUE
-#)
-
-#if(QT_VERSION_MAJOR EQUAL 6)
-#    qt_finalize_executable(ProtosLogViewer)
-#endif()
 
 #target_compile_options(${PROJECT_NAME}
 #        PRIVATE

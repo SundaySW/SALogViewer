@@ -18,7 +18,7 @@ public:
     void loadNamesFromDB();
     void reFresh();
 signals:
-    QVector<QString> needToResetModel();
+    QVector<QString> needToResetModel(const QString&);
 
 private:
     LogItem* tableRootItem;

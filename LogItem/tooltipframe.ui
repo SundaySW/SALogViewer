@@ -6,9 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>262</width>
-    <height>198</height>
+    <width>79</width>
+    <height>79</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <family>Rubik</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Frame</string>
@@ -22,7 +33,7 @@
   <property name="lineWidth">
    <number>0</number>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout">
    <property name="spacing">
     <number>3</number>
    </property>
@@ -40,14 +51,8 @@
    </property>
    <item>
     <widget class="QListWidget" name="itemList">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::WinPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
@@ -83,7 +88,7 @@
       <enum>QListView::Free</enum>
      </property>
      <property name="resizeMode">
-      <enum>QListView::Adjust</enum>
+      <enum>QListView::Fixed</enum>
      </property>
      <property name="viewMode">
       <enum>QListView::ListMode</enum>

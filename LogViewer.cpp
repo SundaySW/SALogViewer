@@ -7,13 +7,20 @@
 #include <LogItem/measurementview.h>
 #include "QMenu"
 
-LogViewer::LogViewer(QJsonObject &inJson, QCustomPlot* inPlot, LogItem* root, QWidget* parent):
-    QWidget(parent)
-    ,mainWin(parent)
+#ifdef _BUILD_TYPE_
+#define CURRENT_BUILD_TYPE_ _BUILD_TYPE_
+#else
+#define CURRENT_BUILD_TYPE_ "CHECK CMAKE"
+#endif
+
+LogViewer::LogViewer(QJsonObject& inJson, QCustomPlot* inPlot, LogItem* root, LogItem* stored, QWidget* _parent) :
+    QWidget(_parent)
+    ,mainWin(_parent)
     ,qJsonObject(inJson)
     ,dbDriver(QSharedPointer<PSQL_Driver>(new PSQL_Driver(inJson)))
     ,Plot(inPlot)
     ,rootItem(root)
+    ,storedRoot(stored)
     ,toolTipFrame(new ToolTipFrame(mainWin))
 {
     toolTipFrame->hide();
@@ -36,7 +43,8 @@ bool LogViewer::setPlot(){
     Plot->setNotAntialiasedElement(QCP::AntialiasedElement::aeAxes);
     Plot->plotLayout()->clear();
     marginGroup = new QCPMarginGroup(Plot);
-    Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("/../Resources/background.png")));
+    auto pathToFile = QString(CURRENT_BUILD_TYPE_) == "Debug" ? "/../" : "/";
+    Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("%1/Resources/background.png").arg(pathToFile)));
     Plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iMultiSelect | QCP::iSelectAxes);
     Plot->setContextMenuPolicy(Qt::CustomContextMenu);
     Plot->plotLayout()->setFillOrder(QCPLayoutGrid::FillOrder::foRowsFirst);
@@ -87,7 +95,7 @@ bool LogViewer::setPlot(){
                 double coord = rect->axis(QCPAxis::atBottom)->pixelToCoord(event->pos().x());
                 double key = rect->graphs().first()->data()->findBegin(coord)->key;
                 makeToolTipData(key);
-                toolTipFrame->resetData(toolTipData);
+                toolTipFrame->resetData(toolTipData, LogViewerItems::makeKeyValueString(key, keyType));
                 toolTipFrame->show();
                 auto pos = event->pos();
                 pos.setY(pos.y()+20);
@@ -194,6 +202,10 @@ void LogViewer::removeItem(LogItem *item){
             item->moveChildren(childItem->childNumber(), rootItem);
     removeGraph(item);
     item->parentItem()->removeChildren(item->childNumber());
+}
+
+void LogViewer::moveItem(LogItem *item){
+    item->parentItem()->moveChildren(item->childNumber(), storedRoot);
 }
 
 void LogViewer::removeGraph(LogItem *item){

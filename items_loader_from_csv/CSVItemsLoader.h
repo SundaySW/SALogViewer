@@ -14,12 +14,12 @@ class CSVItemsLoader : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CSVItemsLoader(LogItem* root, LogViewer* logViewer, QWidget *parent = nullptr);
+    explicit CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *storedRoot, QWidget *parent);
     ~CSVItemsLoader();
     void loadNamesFromCSV();
     void reFresh();
 signals:
-    QVector<QString> needToResetModel();
+    QVector<QString> needToResetModel(const QString& fileName);
 private slots:
     void keyTypeChanged(int idx);
 private:
@@ -35,6 +35,8 @@ private:
     void reFreshView();
     void setKeyAxisItem(LogItem *item);
     void loadDataToItems();
+
+    void updateItems();
 };
 
 #endif // LOAD_ITEMS_FROM_CSV_H

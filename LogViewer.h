@@ -17,12 +17,13 @@
 class LogViewer: public QWidget{
 Q_OBJECT
 public:
-    explicit LogViewer(QJsonObject&, QCustomPlot*, LogItem* root, QWidget* _parent = nullptr);
+    explicit LogViewer(QJsonObject&, QCustomPlot*, LogItem* root, LogItem* stored, QWidget* _parent = nullptr);
     QSharedPointer<PSQL_Driver> getDbDriver();
     bool isDataBaseOk();
     void insertGraph(LogItem*, bool last = false);
     void removeGraph(LogItem*);
     void removeItem(LogItem*);
+    void moveItem(LogItem *item);
     void rebuildLayout();
     bool manageOpenGl();
     QJsonObject& getQJsonObject() const;
@@ -39,6 +40,7 @@ private:
     QJsonObject& qJsonObject;
     QCustomPlot* Plot;
     LogItem* rootItem;
+    LogItem* storedRoot;
     QCPMarginGroup* marginGroup;
     inline static int count;
     int savedXPos;
@@ -53,7 +55,6 @@ private:
     void finishContainerRect(LogItem*);
     void makeMeasurementDlg(const QPoint &pos);
     void makeToolTipData(double key);
-
     LogItem *getItemByGraph(QCPGraph *graph);
 };
 #endif //PROTOSLOGVIEWER_LOGVIEWER_H

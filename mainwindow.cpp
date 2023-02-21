@@ -16,13 +16,14 @@ MainWindow::MainWindow(QWidget *parent)
     , loaderCSVDlg(new QDialog(this))
     , loaderDBDlg(new QDialog(this))
     , rootItem(new LogItem(QVector<QVariant>{"root"}))
+    , storedRoot(new LogItem(QVector<QVariant>{"StoredRoot"}))
     , treeModel(new TreeModel(rootItem, this))
 {
     configureUI();
     openFileLoadConfig();
-    logViewer = new LogViewer(ConfJson, Plot, rootItem, this);
+    logViewer = new LogViewer(ConfJson, Plot, rootItem, storedRoot, this);
     DBitemsLoader = new ItemsLoader(rootItem, logViewer, loaderDBDlg);
-    csvItemsLoader = new CSVItemsLoader(rootItem, logViewer, loaderCSVDlg);
+    csvItemsLoader = new CSVItemsLoader(rootItem, logViewer, storedRoot, loaderCSVDlg);
     settingsDlg = new Settings_dlg(logViewer, ConfJson, this);
     configDBLoaderDlg();
     configCSVLoaderDlg();
@@ -53,6 +54,7 @@ void MainWindow::configCSVLoaderDlg(){
 }
 
 void MainWindow::setConnections(){
+    ui->openGL_Btn->setChecked(Plot->openGl());
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ContextMenuRequested(const QPoint &)));
 
     connect(treeModel, &TreeModel::ItemMoved, [this](LogItem* who, LogItem* where, LogItem* from){
@@ -81,11 +83,15 @@ void MainWindow::setConnections(){
         treeModel->endResetMe();
         loaderCSVDlg->exec();
     });
-    connect(DBitemsLoader, &ItemsLoader::needToResetModel, [this](){
+    connect(DBitemsLoader, &ItemsLoader::needToResetModel, [this](const QString& dbname){
         treeModel->reFresh();
+        ui->dbLabel->setText(dbname);
+        lastSource = LogViewerItems::DataBase;
     });
-    connect(csvItemsLoader, &CSVItemsLoader::needToResetModel, [this](){
+    connect(csvItemsLoader, &CSVItemsLoader::needToResetModel, [this](const QString& fileName){
         treeModel->reFresh();
+        ui->dbLabel->setText(fileName);
+        lastSource = LogViewerItems::CSV;
         logViewer->rebuildLayout();
     });
     connect(logViewer, &LogViewer::errorInDBToLog, [this](const QString& errorStr){
@@ -162,7 +168,7 @@ void MainWindow::ContextMenuRequested(const QPoint& pos){
         auto* configParam = new QMenu(QString("Config"), this);
         auto* changeColor = new QAction(QString("Change Line Color"), this);
         auto* changeWidth = new QAction(QString("Change Line Width"), this);
-        auto* changeStyle = new QAction(QString("Change Line Style"), this);
+//        auto* changeStyle = new QAction(QString("Change Line Style"), this);
 
         menu->addAction(addGraph);
         if(item->isIamContainer()){
@@ -173,7 +179,7 @@ void MainWindow::ContextMenuRequested(const QPoint& pos){
                 menu->addMenu(configParam);
                 configParam->addAction(changeColor);
                 configParam->addAction(changeWidth);
-                configParam->addAction(changeStyle);
+//                configParam->addAction(changeStyle);
             }
         }
         menu->addAction(deleteParam);
@@ -199,7 +205,9 @@ void MainWindow::ContextMenuRequested(const QPoint& pos){
         connect(deleteParam, &QAction::triggered, this, [this, selectedItems](){
             treeModel->beginResetMe();
             for(auto* selItem: selectedItems)
-                logViewer->removeItem(selItem);
+                lastSource == LogViewerItems::DataBase ?
+                    logViewer->removeItem(selItem) :
+                    logViewer->moveItem(selItem);
             treeModel->endResetMe();
             logViewer->rebuildLayout();
         });
@@ -220,11 +228,11 @@ void MainWindow::ContextMenuRequested(const QPoint& pos){
                 selItem->changeLineWidth();
             logViewer->rebuildLayout();
         });
-        connect(changeStyle, &QAction::triggered, this, [this, selectedItems](){
-            for(auto* selItem: selectedItems)
-                selItem->changeLineStyle();
-            logViewer->rebuildLayout();
-        });
+//        connect(changeStyle, &QAction::triggered, this, [this, selectedItems](){
+//            for(auto* selItem: selectedItems)
+//                selItem->changeLineStyle();
+//            logViewer->rebuildLayout();
+//        });
     }
 }
 

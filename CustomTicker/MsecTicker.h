@@ -14,8 +14,9 @@ public:
     MsecTicker();
     QString timeFormat() const {return mTimeFormat;}
     void setTimeFormat(const QString& format);
+    static QString getString(double tick);
 protected:
-    QString mTimeFormat;
+    inline static QString mTimeFormat;
     virtual QString getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision) Q_DECL_OVERRIDE;
 };
 
