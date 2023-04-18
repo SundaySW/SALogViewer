@@ -4,10 +4,10 @@
 #include <QMainWindow>
 #include <view_Settings/Settings_dlg.h>
 #include <QtCore/QFile>
-#include <view_treeview/treeModel.h>
-#include <view_load_items_from_db/itemsloader.h>
+#include <treeModel.h>
+#include <itemsloader.h>
 #include <qcustomplot/qcustomplot.h>
-#include <view_load_items_from_csv/CSVItemsLoader.h>
+#include <CSVItemsLoader.h>
 #include "LogItem/LogItem.h"
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +22,7 @@ public:
     ~MainWindow();
 private slots:
     void ContextMenuRequested(const QPoint &pos);
+    void fontColorChanged(int idx);
 private:
     QJsonObject ConfJson;
     QFile* configFile;
@@ -48,5 +49,6 @@ private:
     void configureUI();
     void closeEvent(QCloseEvent *event) override;
     void saveAll();
+    void TreeViewItemDoubleCLicked(const QModelIndex &index);
 };
 #endif // MAINWINDOW_H

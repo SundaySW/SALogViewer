@@ -56,7 +56,7 @@ void MainWindow::configCSVLoaderDlg(){
 void MainWindow::setConnections(){
     ui->openGL_Btn->setChecked(Plot->openGl());
     connect(ui->treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ContextMenuRequested(const QPoint &)));
-
+    connect(ui->treeView, &QAbstractItemView::doubleClicked, [this](const QModelIndex &index){TreeViewItemDoubleCLicked(index);});
     connect(treeModel, &TreeModel::ItemMoved, [this](LogItem* who, LogItem* where, LogItem* from){
         if(from->isIamContainer() && !from->childCount()){
             logViewer->removeItem(from);
@@ -65,6 +65,7 @@ void MainWindow::setConnections(){
         if(who->isActive())
             logViewer->rebuildLayout();
     });
+
     connect(ui->openGL_Btn, &QPushButton::clicked, [this](){
         ui->openGL_Btn->setChecked(logViewer->manageOpenGl());
     });
@@ -103,20 +104,16 @@ void MainWindow::setConnections(){
         AddToLog(str, err);
         checkServicesConnection();
     });
-
+    connect(ui->PlotFontColor,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(fontColorChanged(int)));
 }
 
-void MainWindow::setupModelData(){
-    QVector<QVariant> dataIn;
-    dataIn << "PWM";
-    auto* newItem = new LogItem(dataIn, rootItem);
-    rootItem->appendChild(newItem);
-    dataIn[0] = "RPM";
-    newItem->appendChild(new LogItem(dataIn, newItem));
-    dataIn[0] = "IDC";
-    rootItem->appendChild(new LogItem(dataIn, rootItem));
-    dataIn[0] = "ECT";
-    newItem->appendChild(new LogItem(dataIn, newItem));
+void MainWindow::fontColorChanged(int idx){
+    auto brush = QBrush(QColor(idx? LogVieverColor_ultraDark : LogVieverColor_dark));
+    Plot->setBackground(brush);
+    auto style = idx ? this->styleSheet().replace(LogVieverColor_darkHEX, LogVieverColor_ultraDarkHEX)
+            : this->styleSheet().replace(LogVieverColor_ultraDarkHEX, LogVieverColor_darkHEX);
+    this->setStyleSheet(style);
 }
 
 void MainWindow::openFileLoadConfig(){
@@ -150,6 +147,12 @@ void MainWindow::AddToLog(const QString& string, bool isError){
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::TreeViewItemDoubleCLicked(const QModelIndex &index){
+    LogItem* item = treeModel->getItem(index);
+    item->isActive() ? logViewer->removeGraph(item) : item->setIsActive(!item->isActive());
+    logViewer->rebuildLayout();
 }
 
 void MainWindow::ContextMenuRequested(const QPoint& pos){

@@ -13,6 +13,7 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
 {
     ui->setupUi(this);
     csvTreeModel = new TreeModel(csvRootItem, this);
+    ui->XColumnType->setVisible(false);
     ui->csvTreeView->setModel(csvTreeModel);
     ui->btn_confirm->setVisible(false);
     ui->btn_confirm_key->setVisible(false);
@@ -28,7 +29,8 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
         csvRootItem->removeAllChildren();
         mainRootItem->removeAllChildren();
         reFresh();
-        loadDataToItems();
+        updateItems();
+        ui->XColumnType->setVisible(true);
     });
 
     connect(ui->btn_confirm, &QPushButton::clicked, [this, parent](){
@@ -52,6 +54,7 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
     });
 
     connect(ui->btn_confirm_key, &QPushButton::clicked, [this](){
+        loadDataToItems();
         QModelIndexList indexes = ui->csvTreeView->selectionModel()->selectedIndexes();
         if(!indexes.empty())
             setKeyAxisItem(csvTreeModel->getSelections(indexes).first());
@@ -85,7 +88,7 @@ void CSVItemsLoader::reFresh(){
 
 void CSVItemsLoader::reFreshView(){
     ui->mainLabel->setText("Key Axis Value");
-    ui->infoLabel->setText("Choose item to be on X Axis");
+    ui->infoLabel->setText("Choose type of X Axis data \n and choose item for X Axis");
     ui->openFile->setVisible(false);
     ui->btn_confirm->setVisible(false);
     ui->btn_confirm_key->setVisible(true);
@@ -115,7 +118,7 @@ void CSVItemsLoader::loadDataToItems() {
     auto batch = csvParser->makeNextBatchOfData();
     while(!batch.empty()){
         if(batch[0] == "update"){
-            updateItems();
+            //updateItems();
         }
         else{
             for(auto* item : csvRootItem->getMChildItems()){

@@ -8,7 +8,10 @@
 #include <CustomTicker/MsecTicker.h>
 
 #define LogVieverColor_white QRgb(0xBBBBBB)
-#define LogVieverColor_dark QRgb(0x45494A)
+#define LogVieverColor_ultraDark QRgb(0x2D2D30)
+#define LogVieverColor_ultraDarkHEX "#2D2D30"
+#define LogVieverColor_dark QRgb(0x3B3F40)
+#define LogVieverColor_darkHEX "#3B3F40"
 #define LogVieverColor_middle QRgb(0x545657)
 #define LogVieverColor_middle2 QRgb(0x7C7E80)
 #define LogVieverColor_grid QRgb(0x616161)
@@ -132,7 +135,7 @@ namespace LogViewerItems{
             savedGraph->setPen(savedPen);
             customPlot->removeItem(text);
         }
-        ~SavedGraphColor(){}
+        ~SavedGraphColor()= default;
     };
     struct ToolTipData{
         QColor color;

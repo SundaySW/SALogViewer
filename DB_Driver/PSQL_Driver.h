@@ -11,6 +11,14 @@
 #include <qcustomplot/qcustomplot.h>
 #include "LogItem/LogItem.h"
 
+
+#define Serial_Column_name "n"
+#define DateTime_Column_name "DateTime"
+#define N_of_columns 6
+#define Serial_column 0
+#define DateTime_column 1
+
+
 class PSQL_Driver {
 public:
     std::function<void(const QString&)> errorInDBDriver;
@@ -21,6 +29,7 @@ public:
     void closeConnection();
     [[nodiscard]] bool isDBOk() const;
     QSet<QString>& getTableNames();
+    QMap<QString, QVector<QString>> &getItemsInfo();
     void getLogItemData(const QString&, QVector<QVariant>&, const QString&);
 private:
     QSqlDatabase db;
@@ -29,6 +38,7 @@ private:
     QString eventsTableName = "events";
     QString viewChangesTName = "view_changes";
     QSet<QString> tableNames;
+    QMap<QString, QVector<QString>> tablesInfo;
     bool inError;
     bool connected;
     bool autoConnect;
@@ -41,6 +51,7 @@ private:
     bool execMyQuery(QSqlQuery&, const QString&);
     bool hasTable(const QString &tableName);
     bool sendReq(const QString &queryStr);
+    void loadItemsInfo();
 };
 
 

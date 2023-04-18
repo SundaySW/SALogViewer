@@ -7,14 +7,14 @@ ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *parent)
     ,logViewer(_logViewer)
     ,mainRootItem(_root)
     ,driver(logViewer->getDbDriver())
-    ,tableRootItem(new LogItem(QVector<QVariant>{"TableRoot"}))
+    ,tableRootItem(new LogItem(QVector<QVariant>{"TableRoot", "", "", ""}))
 {
     ui->setupUi(this);
     tableTreeModel = new TreeModel(tableRootItem, this);
     ui->tableTreeView->setModel(tableTreeModel);
 
     connect(ui->btn_confirm, &QPushButton::clicked, [this, parent](){
-        QModelIndexList indexes = ui->tableTreeView->selectionModel()->selectedIndexes();
+        QModelIndexList indexes = ui->tableTreeView->selectionModel()->selectedRows();
         QVector<LogItem*> selectedItems;
         if (!indexes.empty()){
             selectedItems.reserve(indexes.size());
@@ -44,12 +44,16 @@ void ItemsLoader::reFresh(){
 
 void ItemsLoader::loadNamesFromDB() {
     auto tables = driver->getTableNames();
+    auto itemsInfo = driver->getItemsInfo();
     auto checkSet = mainRootItem->getSetOfAllTabNames()
             .unite(tableRootItem->getSetOfAllTabNames());
-    QVector<QVariant> dataIn = {""};
+    QVector<QVariant> dataIn{};
     for(const auto& item: tables){
         if(checkSet.contains(item)) continue;
-        dataIn[0] = item;
+        dataIn.clear();
+        dataIn.append(item);
+        for(const auto& tableInfo : itemsInfo.value(item))
+            dataIn.append(tableInfo);
         auto* newItem = new LogItem(dataIn, tableRootItem);
         tableRootItem->appendChild(newItem);
     }
@@ -67,6 +71,7 @@ void ItemsLoader::loadDataToItem(LogItem* item){
         auto resBtn = QMessageBox::question( this, "Problem while loading DataBase Data",
                                              tr("Key data size not equal value data size\n"),
                                              QMessageBox::Ok);
+        return;
     }
     itemData.clear();
     itemData.resize(keysVector.size());

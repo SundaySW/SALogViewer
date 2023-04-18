@@ -21,6 +21,15 @@ void CSVParser::prepareColumnNames(){
     columns.clear();
     for(const auto& name : line.split(','))
         columns.append(name.trimmed());
+    while(true){
+        line = dataStream->device()->readLine();
+        if(line.isEmpty()) break;
+        auto splitList = line.split(',');
+        if(splitList[0] == columns[0])
+            resetColumns(splitList);
+    }
+    delete dataStream;
+    dataStream = new QDataStream(data);
 }
 
 void CSVParser::resetColumns(const QList<QByteArray>& line){

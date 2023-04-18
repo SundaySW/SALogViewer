@@ -8,7 +8,7 @@
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 #include "QVariant"
-#include "view_treeview/TreeItem.h"
+#include "TreeItem.h"
 #include "QRandomGenerator"
 #include <QBrush>
 #include <qcustomplot/qcustomplot.h>

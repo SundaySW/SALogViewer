@@ -43,13 +43,13 @@ bool LogViewer::setPlot(){
     Plot->setNotAntialiasedElement(QCP::AntialiasedElement::aeAxes);
     Plot->plotLayout()->clear();
     marginGroup = new QCPMarginGroup(Plot);
-    auto pathToFile = QString(CURRENT_BUILD_TYPE_) == "Debug" ? "/../" : "/";
-    Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("%1/Resources/background.png").arg(pathToFile)));
+//    auto pathToFile = QString(CURRENT_BUILD_TYPE_) == "Debug" ? "/../" : "/";
+//    Plot->setBackground(QPixmap(QCoreApplication::applicationDirPath() + QString("%1/Resources/background.png").arg(pathToFile)));
+    Plot->setBackground(QBrush(QColor(LogVieverColor_dark)));
     Plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iMultiSelect | QCP::iSelectAxes);
     Plot->setContextMenuPolicy(Qt::CustomContextMenu);
     Plot->plotLayout()->setFillOrder(QCPLayoutGrid::FillOrder::foRowsFirst);
     Plot->plotLayout()->setRowSpacing(0);
-    qApp->setStyleSheet("QToolTip { background-color: #45494A; color: #BBBBBB; border: none; font-family: Rubik;}"); //todo change with
 
     connect(Plot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(plotContextMenuRequest(QPoint)));
     connect(Plot, &QCustomPlot::axisDoubleClick, [this](QCPAxis* axis){
@@ -61,9 +61,9 @@ bool LogViewer::setPlot(){
 
     connect(Plot, &QCustomPlot::mouseWheel, [this](QWheelEvent* event){
         if(QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
-            Plot->axisRectAt(event->position())->setRangeZoom(Qt::Horizontal);
-        else
             Plot->axisRectAt(event->position())->setRangeZoom(Qt::Vertical);
+        else
+            Plot->axisRectAt(event->position())->setRangeZoom(Qt::Horizontal);
         if(Plot->axisRectAt(event->position())){
         }
     });

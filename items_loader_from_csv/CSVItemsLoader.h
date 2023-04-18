@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <LogViewer.h>
 #include "CSVParser.h"
-#include <view_treeview/treeModel.h>
+#include <treeModel.h>
 
 namespace Ui {
 class CSVItemsLoader;
@@ -35,7 +35,6 @@ private:
     void reFreshView();
     void setKeyAxisItem(LogItem *item);
     void loadDataToItems();
-
     void updateItems();
 };
 

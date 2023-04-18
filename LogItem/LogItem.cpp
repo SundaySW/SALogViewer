@@ -35,14 +35,17 @@ LogItem::LogItem(const QVector<QVariant>& _data, LogItem* parentItem)
 }
 
 QColor LogItem::generateColor(){
-    auto randColor = QColor(generator.bounded(255), generator.bounded(255), generator.bounded(255));
-    float value = (randColor.red() + randColor.green() + randColor.blue())/3;
-    float newValue = value + generator.bounded(50);
-    float valueRatio = newValue / value;
+    auto randColor = QColor(generator.bounded(120,255), generator.bounded(120,255), generator.bounded(120,255));
     auto newColor = QColor();
-    newColor.setRed(randColor.red() * valueRatio);
-    newColor.setGreen(randColor.green() * valueRatio);
-    newColor.setBlue(randColor.blue() * valueRatio);
+//    float value = (randColor.red() + randColor.green() + randColor.blue())/3;
+//    float newValue = value + generator.bounded(50);
+//    float valueRatio = newValue / value;
+//    newColor.setRed(randColor.red() * valueRatio);
+//    newColor.setGreen(randColor.green() * valueRatio);
+//    newColor.setBlue(randColor.blue() * valueRatio);
+    newColor.setRed(randColor.red());
+    newColor.setGreen(randColor.green());
+    newColor.setBlue(randColor.blue());
     return newColor;
 }
 
@@ -107,19 +110,16 @@ QVariant LogItem::data(int column, int role) const {
     {
         case Qt::BackgroundRole:
             return QBrush(QColor(LogVieverColor_dark));
-            break;
         case Qt::DisplayRole:
-            return name;
-            break;
+            return TreeItem::data(column,role);
         case Qt::DecorationRole:
             if(isActive())
                 return itemColor;
             break;
         case Qt::TextAlignmentRole:
             return Qt::AlignCenter;
-            break;
     }
-    return QVariant();
+    return {};
 }
 
 bool LogItem::isActive() const {

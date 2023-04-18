@@ -23,11 +23,9 @@
   <property name="styleSheet">
    <string notr="true">QWidget {
 	color: #BBBBBB;
-	background: #45494A;
-    font-family: Rubik;
+	background:#3B3F40;
+    font-family:Rubik;
 }
-
-
 
 
 QLineEdit {
@@ -113,6 +111,7 @@ QTreeView::item
 	margin-top: 1px;
 	margin-bottom: 1px;
 	padding: 1px;
+	background:#3B3F40;
 }
 
 QTreeView::item:hover
@@ -127,7 +126,7 @@ QTreeView::item:icon
 
 QTreeView::item:selected
 {
-    background-color: #556166;
+    background-color: #545657;
 }
 
 
@@ -369,7 +368,7 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
            <number>1</number>
           </property>
           <property name="editTriggers">
-           <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+           <set>QAbstractItemView::EditKeyPressed</set>
           </property>
           <property name="tabKeyNavigation">
            <bool>true</bool>
@@ -437,9 +436,7 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
            <cursorShape>CrossCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">background: none;
-
-</string>
+           <string notr="true">background-color: none;</string>
           </property>
          </widget>
         </item>
@@ -534,6 +531,26 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
         <property name="text">
          <string/>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="PlotFontColor">
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <item>
+         <property name="text">
+          <string>Midnight</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Night</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>

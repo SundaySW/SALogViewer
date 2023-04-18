@@ -10,6 +10,12 @@
 #define CURRENT_VER "CHECK CMAKE"
 #endif
 
+#ifdef _BUILD_TYPE_
+#define CURRENT_BUILD_TYPE_ _BUILD_TYPE_
+#else
+#define CURRENT_BUILD_TYPE_ "CHECK CMAKE"
+#endif
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

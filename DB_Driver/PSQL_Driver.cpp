@@ -45,18 +45,41 @@ void PSQL_Driver::loadTableNames(){
         throwErrorToLog("while check table: " + query.lastError().text());
         return;
     }
-    QStringList results;
     tableNames.clear();
     while (query.next())
         tableNames.insert(query.value(0).toString());
+}
+
+void PSQL_Driver::loadItemsInfo(){
+    tablesInfo.clear();
+    QVector<QString> info{};
+    info.reserve(3);
+    QSqlQuery query;
+    for(const auto& tableName: tableNames){
+        info.clear();
+        query.exec(QString(
+                "(SELECT %2,%3 FROM %1 ORDER BY %2 DESC LIMIT 1)"
+                "UNION"
+                "(SELECT %2,%3 FROM %1 LIMIT 1)"
+                "ORDER BY %2")
+                .arg(tableName,
+                     Serial_Column_name,
+                     DateTime_Column_name
+                     ));
+        query.next();
+        info.append(query.value(1).toString());
+        query.next();
+        info.append(query.value(1).toString());
+        info.append(query.value(0).toString());
+        tablesInfo.insert(tableName, info);
+    }
 }
 
 void PSQL_Driver::getLogItemData(const QString& tableName, QVector<QVariant>& dataVec, const QString& columnName){
     QString queryStr = QString(
                             "SELECT %1 "
                                 "FROM %2 ;"
-                            ).arg(columnName)
-                             .arg(tableName);
+                            ).arg(columnName, tableName);
     QSqlQuery query;
     if(!execMyQuery(query, queryStr)){
         throwErrorToLog("while loading data: " + query.lastError().text());
@@ -144,4 +167,9 @@ bool PSQL_Driver::isAutoConnect() const {
 QSet<QString>& PSQL_Driver::getTableNames(){
     loadTableNames();
     return tableNames;
+}
+
+QMap<QString, QVector<QString>>& PSQL_Driver::getItemsInfo(){
+    loadItemsInfo();
+    return tablesInfo;
 }

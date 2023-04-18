@@ -46,7 +46,7 @@ set(PROJECT_SOURCES
         ${SOURCES}
         )
 
-#add_subdirectory(qcustomplot)
+add_subdirectory(qcustomplot)
 
 add_executable(${PROJECT_NAME}
         ${PROJECT_SOURCES}
@@ -56,6 +56,19 @@ target_sources(${PROJECT_NAME}
         PRIVATE
         ${SOURCE_FILES}
 )
+
+target_include_directories(${PROJECT_NAME}
+        PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/DB_Driver
+        ${CMAKE_CURRENT_SOURCE_DIR}/view_Settings
+        ${CMAKE_CURRENT_SOURCE_DIR}/LogItem
+        ${CMAKE_CURRENT_SOURCE_DIR}/TreeModel
+        ${CMAKE_CURRENT_SOURCE_DIR}/items_loader_from_db
+        ${CMAKE_CURRENT_SOURCE_DIR}/items_loader_from_csv
+        ${CMAKE_CURRENT_SOURCE_DIR}/CSV
+        ${CMAKE_CURRENT_SOURCE_DIR}/CustomTicker
+        ${CMAKE_CURRENT_SOURCE_DIR}/qcustomplot
+        )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     enable_language("RC")

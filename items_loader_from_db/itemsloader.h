@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <LogViewer.h>
-#include <view_treeview/treeModel.h>
+#include <treeModel.h>
 
 namespace Ui {
 class ItemsLoader;
