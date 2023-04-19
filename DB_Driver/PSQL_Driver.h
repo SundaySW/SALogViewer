@@ -11,14 +11,6 @@
 #include <qcustomplot/qcustomplot.h>
 #include "LogItem/LogItem.h"
 
-
-#define Serial_Column_name "n"
-#define DateTime_Column_name "DateTime"
-#define N_of_columns 6
-#define Serial_column 0
-#define DateTime_column 1
-
-
 class PSQL_Driver {
 public:
     std::function<void(const QString&)> errorInDBDriver;
@@ -31,6 +23,10 @@ public:
     QSet<QString>& getTableNames();
     QMap<QString, QVector<QString>> &getItemsInfo();
     void getLogItemData(const QString&, QVector<QVariant>&, const QString&);
+    int getLogItemData(const QString &tableName, const QString &keyN, const QString &valueN, QVector<QVariant> &dataVec,
+                       const QString &dateFrom, const QString &dateTo, int rowFrom, int rowTo);
+    void getLogItemData(const QString &tableName, const QString &keyN, const QString &valueN, QSqlQuery &query,
+                        const QString &dateFrom, const QString &dateTo, int rowFrom, int rowTo);
 private:
     QSqlDatabase db;
     QJsonObject& config;

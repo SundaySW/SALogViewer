@@ -31,6 +31,7 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
         reFresh();
         updateItems();
         ui->XColumnType->setVisible(true);
+        ui->XColumnType->setCurrentIndex(logViewer->getKeyType());
     });
 
     connect(ui->btn_confirm, &QPushButton::clicked, [this, parent](){
@@ -61,6 +62,7 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
         ui->csvTreeView->setSelectionMode(QHeaderView::MultiSelection);
         ui->btn_confirm->setVisible(true);
         ui->btn_confirm_key->setVisible(false);
+        ui->XColumnType->setVisible(false);
         ui->btn_confirm->setEnabled(true);
         ui->openFile->setVisible(true);
         ui->mainLabel->setText("CSV Items");
@@ -139,10 +141,12 @@ void CSVItemsLoader::updateItems() {
     csvTreeModel->beginResetMe();
     auto tables = csvParser->getColumns();
     auto checkSet = csvRootItem->getSetOfAllTabNames();
-    QVector<QVariant> dataIn = {""};
+    QVector<QVariant> dataIn{};
+    dataIn.reserve(2);
     for (const auto &item: tables) {
         if (checkSet.contains(item)) continue;
-        dataIn[0] = item;
+        dataIn.clear();
+        dataIn.append(item);
         auto *newItem = new LogItem(dataIn, csvRootItem);
         csvRootItem->appendChild(newItem);
     }

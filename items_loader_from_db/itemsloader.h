@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <LogViewer.h>
 #include <treeModel.h>
+#include "dateconfdlg.h"
 
 namespace Ui {
 class ItemsLoader;
@@ -27,7 +28,11 @@ private:
     LogViewer* logViewer;
     QSharedPointer<PSQL_Driver> driver;
     Ui::ItemsLoader *ui;
-    void loadDataToItem(LogItem* item);
+    DateConfDlg* dateConfDlg;
+    QString startDate;
+    QString endDate;
+    QString rowCount;
+    void loadDataToItem(LogItem *item, const QString &dateFrom, const QString &dateTo, const QString &count);
 };
 
 #endif // ITEMSLOADER_H

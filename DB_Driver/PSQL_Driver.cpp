@@ -6,6 +6,9 @@
 #include "QSqlQuery"
 #include "QSqlError"
 
+#define Serial_Column_name "n"
+#define DateTime_Column_name "datetime"
+
 PSQL_Driver::PSQL_Driver(QJsonObject& conf)
         :config(conf)
         ,inError(false)
@@ -88,6 +91,61 @@ void PSQL_Driver::getLogItemData(const QString& tableName, QVector<QVariant>& da
     dataVec.reserve(query.size());
     while (query.next())
         dataVec.append(query.value(0));
+}
+
+int PSQL_Driver::getLogItemData(const QString& tableName, const QString& keyN, const QString& valueN,
+                                QVector<QVariant>& dataVec,
+                                const QString &dateFrom, const QString &dateTo,
+                                int rowFrom, int rowTo){
+    QString queryStr = QString(
+            "SELECT %1,%2 "
+            "FROM %3 "
+            "WHERE %4 BETWEEN %5 and %6 AND %1 BETWEEN '%7' AND '%8' "
+            "ORDER by %4")
+                    .arg(
+                    keyN,
+                    valueN,
+                    tableName,
+                    Serial_Column_name,
+                    QString::number(rowFrom),
+                    QString::number(rowTo),
+                    dateFrom,
+                    dateTo);
+    QSqlQuery query;
+    if(!execMyQuery(query, queryStr)){
+        throwErrorToLog("while loading data: " + query.lastError().text());
+        return 0;
+    }
+    int retVal = query.size();
+    dataVec.clear();
+    dataVec.reserve(query.size()*2);
+    while (query.next()){
+        dataVec.append(query.value(0));
+        dataVec.append(query.value(1));
+    }
+    return retVal;
+}
+
+void PSQL_Driver::getLogItemData(const QString& tableName, const QString& keyN, const QString& valueN,
+                                                QSqlQuery& query,
+                                                const QString &dateFrom, const QString &dateTo,
+                                                int rowFrom, int rowTo){
+    QString queryStr = QString(
+            "SELECT %1,%2 "
+            "FROM %3 "
+            "WHERE %4 BETWEEN %5 and %6 AND %1 BETWEEN '%7' AND '%8' "
+            "ORDER by %4")
+            .arg(
+                    keyN,
+                    valueN,
+                    tableName,
+                    Serial_Column_name,
+                    QString::number(rowFrom),
+                    QString::number(rowTo),
+                    dateFrom,
+                    dateTo);
+    if(!execMyQuery(query, queryStr))
+        throwErrorToLog("while loading data: " + query.lastError().text());
 }
 
 bool PSQL_Driver::hasTable(const QString& tableName){

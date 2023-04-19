@@ -25,7 +25,7 @@ void ToolTipFrame::resetData(const QVector<LogViewerItems::ToolTipData> &newData
         if(newString.length() > newWidth)
             newWidth = newString.length();
     }
-    this->setFixedSize(newWidth * 7.5, list->count() * 22);
+    this->setFixedSize(newWidth * 9, list->count() * 24);
     //todo find another way
 }
 
