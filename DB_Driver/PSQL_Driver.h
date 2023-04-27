@@ -16,17 +16,21 @@ public:
     std::function<void(const QString&)> errorInDBDriver;
     std::function<void(const QString&)> eventInDBDriver;
     explicit PSQL_Driver(QJsonObject &conf);
+    explicit PSQL_Driver(PSQL_Driver*);
+    ~PSQL_Driver();
+
     bool setConnection();
+    bool setConnection(const QString &connectionName);
     bool isAutoConnect() const;
     void closeConnection();
     [[nodiscard]] bool isDBOk() const;
     QSet<QString>& getTableNames();
     QMap<QString, QVector<QString>> &getItemsInfo();
-    void getLogItemData(const QString&, QVector<QVariant>&, const QString&);
-    int getLogItemData(const QString &tableName, const QString &keyN, const QString &valueN, QVector<QVariant> &dataVec,
-                       const QString &dateFrom, const QString &dateTo, int rowFrom, int rowTo);
+    void loadAllItemsInfo();
+    int countOfRowsInTable(const QString& tableName);
     void getLogItemData(const QString &tableName, const QString &keyN, const QString &valueN, QSqlQuery &query,
                         const QString &dateFrom, const QString &dateTo, int rowFrom, int rowTo);
+
 private:
     QSqlDatabase db;
     QJsonObject& config;
@@ -43,11 +47,11 @@ private:
     static QString getTableInsertVars();
     static QString getTableInsertValues(const QString &eventStr);
     void loadTableNames();
+    void loadItemsInfo();
     void configUpdate();
     bool execMyQuery(QSqlQuery&, const QString&);
     bool hasTable(const QString &tableName);
     bool sendReq(const QString &queryStr);
-    void loadItemsInfo();
 };
 
 

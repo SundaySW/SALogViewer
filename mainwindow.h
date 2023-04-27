@@ -42,7 +42,6 @@ private:
     void openFileLoadConfig();
     void AddToLog(const QString &string, bool isError = false);
     void checkServicesConnection();
-    void setupModelData();
     void configDBLoaderDlg();
     void configCSVLoaderDlg();
     void setConnections();

@@ -62,10 +62,8 @@ bool LogViewer::setPlot(){
     connect(Plot, &QCustomPlot::mouseWheel, [this](QWheelEvent* event){
         if(QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
             Plot->axisRectAt(event->position())->setRangeZoom(Qt::Vertical);
-        else
+        else if(Plot->axisRectAt(event->position()))
             Plot->axisRectAt(event->position())->setRangeZoom(Qt::Horizontal);
-        if(Plot->axisRectAt(event->position())){
-        }
     });
 
     connect(Plot, &QCustomPlot::selectionChangedByUser, [this](){

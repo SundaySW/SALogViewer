@@ -222,16 +222,25 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
         <bool>false</bool>
        </property>
        <property name="headerHidden">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <attribute name="headerVisible">
-        <bool>false</bool>
+        <bool>true</bool>
        </attribute>
        <attribute name="headerCascadingSectionResizes">
-        <bool>false</bool>
+        <bool>true</bool>
        </attribute>
        <attribute name="headerDefaultSectionSize">
-        <number>200</number>
+        <number>115</number>
+       </attribute>
+       <attribute name="headerHighlightSections">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="headerStretchLastSection">
+        <bool>true</bool>
        </attribute>
       </widget>
      </item>

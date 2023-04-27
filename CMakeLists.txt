@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(SALogViewer VERSION 1.0 LANGUAGES CXX)
-add_definitions(-D_VER="V1.0")
+add_definitions(-D_VER="V1.2")
 add_definitions(-D_BUILD_TYPE_="${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

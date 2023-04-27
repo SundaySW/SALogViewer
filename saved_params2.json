@@ -1,0 +1,19 @@
+{
+    "ConfObject": {
+        "AutoReConnect": true,
+        "ServerIP": "127.0.0.5",
+        "ServerPort": "3699"
+    },
+    "DBConfObject": {
+        "DatabaseName": "PSDB",
+        "HostName": "95.84.134.198",
+        "KeyColumnName": "DateTime",
+        "Password": "ddpoc27cz2C",
+        "Port": "5432",
+        "UserName": "postgres",
+        "ValueColumnName": "Value",
+        "autoconnect": true
+    },
+    "KeyColumnName": null,
+    "ValueColumnName": null
+}

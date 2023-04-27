@@ -32,7 +32,12 @@ private:
     QString startDate;
     QString endDate;
     QString rowCount;
-    void loadDataToItem(LogItem *item, const QString &dateFrom, const QString &dateTo, const QString &count);
+    void loadDataToItem(LogItem *item, const QString &dateFrom, const QString &dateTo, const QString &count,
+                        PSQL_Driver *thisDriver);
+    std::thread Thread;
+    void threadWork();
+
+    void reopenDB();
 };
 
 #endif // ITEMSLOADER_H

@@ -54,6 +54,7 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) return rootItem->data(section, Qt::DisplayRole);
+    if (role == Qt::BackgroundRole) return QBrush(QColor(LogVieverColor_dark));
     return QVariant();
 }
 

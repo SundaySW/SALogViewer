@@ -17,7 +17,39 @@ PSQL_Driver::PSQL_Driver(QJsonObject& conf)
     configUpdate();
 }
 
-bool PSQL_Driver::setConnection() {
+PSQL_Driver::PSQL_Driver(PSQL_Driver* otherDriver):
+    config(otherDriver->config)
+    ,host(otherDriver->host)
+    ,dbName(otherDriver->dbName)
+    ,userName(otherDriver->userName)
+    ,password(otherDriver->password)
+    ,port(otherDriver->port)
+{
+    errorInDBDriver = otherDriver->errorInDBDriver;
+    eventInDBDriver = otherDriver->eventInDBDriver;
+}
+
+bool PSQL_Driver::setConnection(const QString& connectionName){
+    bool result;
+    db = QSqlDatabase::addDatabase("QPSQL", connectionName.toLatin1());
+    configUpdate();
+    db.setHostName(host);
+    db.setDatabaseName(dbName);
+    db.setPort(port.toInt());
+    result = db.open(userName, password);
+    if(result){
+        connected = true;
+        inError = false;
+    }
+    else {
+        connected = false;
+        inError = true;
+        throwErrorToLog(QString("cant open database name: %1").arg(dbName));
+    }
+    return result;
+}
+
+bool PSQL_Driver::setConnection(){
     bool result;
     db = QSqlDatabase::addDatabase("QPSQL");
     configUpdate();
@@ -60,7 +92,7 @@ void PSQL_Driver::loadItemsInfo(){
     QSqlQuery query;
     for(const auto& tableName: tableNames){
         info.clear();
-        query.exec(QString(
+        if(!execMyQuery(query, QString(
                 "(SELECT %2,%3 FROM %1 ORDER BY %2 DESC LIMIT 1)"
                 "UNION"
                 "(SELECT %2,%3 FROM %1 LIMIT 1)"
@@ -68,62 +100,14 @@ void PSQL_Driver::loadItemsInfo(){
                 .arg(tableName,
                      Serial_Column_name,
                      DateTime_Column_name
-                     ));
+                     ))) return;
         query.next();
-        info.append(query.value(1).toString());
+        info.append(query.value(1).toDateTime().toString("dd.MM.yyyy\nhh:mm:ss"));
         query.next();
-        info.append(query.value(1).toString());
+        info.append(query.value(1).toDateTime().toString("dd.MM.yyyy\nhh:mm:ss"));
         info.append(query.value(0).toString());
         tablesInfo.insert(tableName, info);
     }
-}
-
-void PSQL_Driver::getLogItemData(const QString& tableName, QVector<QVariant>& dataVec, const QString& columnName){
-    QString queryStr = QString(
-                            "SELECT %1 "
-                                "FROM %2 ;"
-                            ).arg(columnName, tableName);
-    QSqlQuery query;
-    if(!execMyQuery(query, queryStr)){
-        throwErrorToLog("while loading data: " + query.lastError().text());
-        return;
-    }
-    dataVec.reserve(query.size());
-    while (query.next())
-        dataVec.append(query.value(0));
-}
-
-int PSQL_Driver::getLogItemData(const QString& tableName, const QString& keyN, const QString& valueN,
-                                QVector<QVariant>& dataVec,
-                                const QString &dateFrom, const QString &dateTo,
-                                int rowFrom, int rowTo){
-    QString queryStr = QString(
-            "SELECT %1,%2 "
-            "FROM %3 "
-            "WHERE %4 BETWEEN %5 and %6 AND %1 BETWEEN '%7' AND '%8' "
-            "ORDER by %4")
-                    .arg(
-                    keyN,
-                    valueN,
-                    tableName,
-                    Serial_Column_name,
-                    QString::number(rowFrom),
-                    QString::number(rowTo),
-                    dateFrom,
-                    dateTo);
-    QSqlQuery query;
-    if(!execMyQuery(query, queryStr)){
-        throwErrorToLog("while loading data: " + query.lastError().text());
-        return 0;
-    }
-    int retVal = query.size();
-    dataVec.clear();
-    dataVec.reserve(query.size()*2);
-    while (query.next()){
-        dataVec.append(query.value(0));
-        dataVec.append(query.value(1));
-    }
-    return retVal;
 }
 
 void PSQL_Driver::getLogItemData(const QString& tableName, const QString& keyN, const QString& valueN,
@@ -166,7 +150,7 @@ bool PSQL_Driver::hasTable(const QString& tableName){
 bool PSQL_Driver::sendReq(const QString &queryStr){
     if(inError) return false;
     QSqlQuery query;
-    if(!query.exec(queryStr))
+    if(!execMyQuery(query,queryStr))
     {
         inError = true;
         throwErrorToLog("while sending query: " + query.lastError().text());
@@ -176,10 +160,15 @@ bool PSQL_Driver::sendReq(const QString &queryStr){
 }
 
 bool PSQL_Driver::execMyQuery(QSqlQuery& query, const QString& queryStr){
-//    if(inError) return false;
-    bool result = query.exec(queryStr);
-//    if(!result) inError = true;
-    return result;
+    if(!connected)
+        setConnection();
+    query = db.exec(queryStr);
+    if(db.lastError().isValid()){
+        inError = true;
+        throwErrorToLog("while sending query: " + query.lastError().text());
+        return false;
+    }
+    return true;
 }
 
 bool PSQL_Driver::isDBOk() const {
@@ -187,7 +176,7 @@ bool PSQL_Driver::isDBOk() const {
 }
 
 QString PSQL_Driver::getTableInsertVars() {
-    return QString("DateTime, Event");
+    return {"DateTime, Event"};
 }
 
 QString PSQL_Driver::getTableInsertValues(const QString &eventStr) {
@@ -207,18 +196,21 @@ void PSQL_Driver::configUpdate() {
 void PSQL_Driver::closeConnection() {
     connected = false;
     db.close();
+    db.removeDatabase(QSqlDatabase::defaultConnection);
     throwEventToLog(QString("closed database name: %1").arg(dbName));
 }
 
 void PSQL_Driver::throwEventToLog(const QString& str){
     eventInDBDriver("Event in DB: " + str);
+    //todo make signals
 }
 
 void PSQL_Driver::throwErrorToLog(const QString& str){
     errorInDBDriver("Error in DB: " + str);
+    //todo make signals
 }
 
-bool PSQL_Driver::isAutoConnect() const {
+bool PSQL_Driver::isAutoConnect() const{
     return autoConnect;
 }
 
@@ -231,3 +223,19 @@ QMap<QString, QVector<QString>>& PSQL_Driver::getItemsInfo(){
     loadItemsInfo();
     return tablesInfo;
 }
+
+int PSQL_Driver::countOfRowsInTable(const QString& tableName){
+    if(tablesInfo.contains(tableName))
+        return getItemsInfo().value(tableName).at(2).toInt();
+    else return 0;
+}
+
+void PSQL_Driver::loadAllItemsInfo(){
+    loadTableNames();
+    loadItemsInfo();
+}
+
+PSQL_Driver::~PSQL_Driver() {
+//    closeConnection();
+}
+
