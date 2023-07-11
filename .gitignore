@@ -62,7 +62,6 @@ Thumbs.db
 # --------
 CMakeLists.txt.user*
 /build-ProtosLogViewer-Desktop-Debug/
-/cmake-build-debug/
-/cmake-build-release/
+/cmake-build-*/
 .idea
 /psql_libs/inc/

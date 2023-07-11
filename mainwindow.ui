@@ -14,8 +14,8 @@
    <string>SA Log Viewer</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="accessories-calculator" resource="Resources/files.qrc">
-    <normaloff>:/icons/chart.svg</normaloff>:/icons/chart.svg</iconset>
+   <iconset resource="Resources/files.qrc">
+    <normaloff>:/icons/chart_light.svg</normaloff>:/icons/chart_light.svg</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
