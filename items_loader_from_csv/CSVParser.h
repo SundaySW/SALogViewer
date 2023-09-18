@@ -22,6 +22,7 @@ public:
     int getColumnIndex(const QString& columnName);
     virtual ~CSVParser();
 private:
+    char kSeparator_ = ',';
     QString fileName;
     std::unique_ptr<QFile> File;
     QDataStream* dataStream;

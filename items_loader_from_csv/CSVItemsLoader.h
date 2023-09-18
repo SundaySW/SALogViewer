@@ -25,6 +25,7 @@ private slots:
 private:
     LogViewer* logViewer;
     TreeModel* csvTreeModel;
+    QString savedDir_ = "/home";
     QString fileName;
     std::unique_ptr<CSVParser> csvParser;
     QString keyAxisName{};

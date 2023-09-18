@@ -34,10 +34,10 @@ ItemsLoader::ItemsLoader(LogItem* _root, LogViewer* _logViewer, QWidget *parent)
         endDate = eDate;
         rowCount = rCnt;
 
-        if (Thread.joinable())
-            Thread.join();
-
-        Thread = std::thread([this](){ threadWork();});
+        Thread.quit();
+        this->moveToThread(&Thread);
+        connect(&Thread, &QThread::started, this, &ItemsLoader::threadWork);
+        Thread.start();
     });
 }
 
@@ -46,7 +46,7 @@ void ItemsLoader::threadWork(){
     ui->label->setVisible(true);
     ui->itemsCount->setVisible(true);
 
-    auto thisDriver = QSharedPointer<PSQL_Driver>(new PSQL_Driver(driver.get()));
+    auto thisDriver = QSharedPointer<PSQL_Driver>(driver);
     thisDriver->setConnection("112233");
     thisDriver->loadAllItemsInfo();
 
@@ -56,7 +56,7 @@ void ItemsLoader::threadWork(){
     tableTreeModel->beginResetMe();
     int count = 0;
     for(auto* item: selectedItems){
-        loadDataToItem(item, startDate, endDate, rowCount, thisDriver.get());
+        loadDataToItem(item, startDate, endDate, rowCount, thisDriver);
         tableRootItem->moveChildren(item->childNumber(), mainRootItem);
         ui->itemsCount->setText(QString("%1").arg(++count));
     }
@@ -70,8 +70,8 @@ void ItemsLoader::threadWork(){
 
 ItemsLoader::~ItemsLoader()
 {
-    if (Thread.joinable())
-        Thread.join();
+    Thread.quit();
+    Thread.wait();
     driver->closeConnection();
     delete ui;
 }
@@ -103,7 +103,7 @@ void ItemsLoader::loadNamesFromDB() {
 }
 
 void ItemsLoader::loadDataToItem(LogItem *item, const QString &dateFrom, const QString &dateTo, const QString &count,
-                                 PSQL_Driver *thisDriver){
+                                 const QSharedPointer<PSQL_Driver>& thisDriver){
     auto& itemData = item->getGraphData();
     auto keyColumn = logViewer->getQJsonObject().value("DBConfObject")["KeyColumnName"].toString();
     auto valueColumn = logViewer->getQJsonObject().value("DBConfObject")["ValueColumnName"].toString();

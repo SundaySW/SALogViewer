@@ -19,12 +19,12 @@ CSVParser::CSVParser(QString &incFileName)
 void CSVParser::prepareColumnNames(){
     QByteArray line = dataStream->device()->readLine();
     columns.clear();
-    for(const auto& name : line.split(','))
+    for(const auto& name : line.split(kSeparator_))
         columns.append(name.trimmed());
     while(true){
         line = dataStream->device()->readLine();
         if(line.isEmpty()) break;
-        auto splitList = line.split(',');
+        auto splitList = line.split(kSeparator_);
         if(splitList[0] == columns[0])
             resetColumns(splitList);
     }
@@ -42,7 +42,7 @@ QVector<QVariant> CSVParser::makeNextBatchOfData(){
     QVector<QVariant> retVal{};
     QByteArray line = dataStream->device()->readLine();
     if(line.isEmpty()) return retVal;
-    auto splitList = line.split(',');
+    auto splitList = line.split(kSeparator_);
     if(splitList[0] == columns[0]){
         resetColumns(splitList);
         retVal.append("update");

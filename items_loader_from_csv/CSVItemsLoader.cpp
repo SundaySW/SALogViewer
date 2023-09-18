@@ -20,7 +20,8 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
 
     connect(ui->openFile, &QPushButton::clicked, [this](){
         fileName = QFileDialog::getOpenFileName(this,
-                                                tr("Open csv"), "/home", tr("csv Files (*.csv)"));
+                                            tr("Open csv"), savedDir_, tr("csv Files (*.csv)"));
+        savedDir_ = fileName.remove("*.csv");
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             return;
@@ -45,20 +46,21 @@ CSVItemsLoader::CSVItemsLoader(LogItem *root, LogViewer *incLogViewer, LogItem *
         for(auto* item: selectedItems)
             csvRootItem->moveChildren(item->childNumber(), mainRootItem);
         csvTreeModel->endResetMe();
-        emit needToResetModel("FileName: "+fileName.split('/').last());
+        emit needToResetModel("FileName: " + fileName.split('/').last());
         parent->close();
     });
 
-    connect(ui->csvTreeView->selectionModel(), &QItemSelectionModel::selectionChanged, [this](const QItemSelection &selected){
+    connect(ui->csvTreeView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            [this](const QItemSelection &selected){
         if(ui->btn_confirm_key->isVisible())
             ui->btn_confirm_key->setEnabled(!selected.empty());
     });
 
     connect(ui->btn_confirm_key, &QPushButton::clicked, [this](){
-        loadDataToItems();
         QModelIndexList indexes = ui->csvTreeView->selectionModel()->selectedIndexes();
         if(!indexes.empty())
             setKeyAxisItem(csvTreeModel->getSelections(indexes).first());
+        loadDataToItems();
         ui->csvTreeView->setSelectionMode(QHeaderView::MultiSelection);
         ui->btn_confirm->setVisible(true);
         ui->btn_confirm_key->setVisible(false);
@@ -102,6 +104,7 @@ void CSVItemsLoader::loadNamesFromCSV(){
     auto tables = csvParser->getColumns();
     auto checkSet = mainRootItem->getSetOfAllTabNames()
             .unite(csvRootItem->getSetOfAllTabNames());
+    checkSet.insert(keyAxisName);
     QVector<QVariant> dataIn = {""};
     for(const auto& item: tables){
         if(checkSet.contains(item)) continue;
@@ -128,7 +131,8 @@ void CSVItemsLoader::loadDataToItems() {
                 if(itemDataIdx>=0 && itemDataIdx < batch.size())
                     item->getGraphData().append(
                             QCPGraphData(
-                                    LogViewerItems::prepareKeyData(batch[keyColumnIndex.value_or(0)], logViewer->getKeyType()),
+                                    LogViewerItems::prepareKeyData(batch[keyColumnIndex.value_or(0)],
+                                                                   logViewer->getKeyType()),
                                     batch[itemDataIdx].toDouble())
                                     );
             }
